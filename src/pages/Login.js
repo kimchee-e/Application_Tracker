@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './../styles/Auth.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,7 +30,7 @@ const Login = () => {
             } else {
                 await signup(email, password);
             }
-            window.location.href = '/tableView';
+            navigate('/tableView');
         } catch (err) {
             setError(isLogin 
                 ? 'Failed to sign in. Please check your credentials.' 

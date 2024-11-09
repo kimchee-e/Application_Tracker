@@ -1,13 +1,15 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import "./../styles/Navbar.css";
 
 const Navbar = () => {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             await logout();
-            window.location.href = '/';
+            navigate('/');
         } catch (error) {
             console.error('Failed to log out');
         }
@@ -15,28 +17,28 @@ const Navbar = () => {
 
     return (
         <nav className="nav">
-            <a href="/" className="site-name">Website Name</a>
+            <Link to="/" className="site-name">Website Name</Link>
             <ul>
                 <li>
-                    <a href="/">Home</a>
+                    <Link to="/">Home</Link>
+                </li>
+                <li>
+                    <Link to="/extension">Extension</Link>
                 </li>
                 {user && (
                     <li>
-                        <a href="/tableView">Applications</a>
-                    </li>
-                )}
-                {user && (
-                    <li>
-                        <a href="/extension">Extension</a>
+                        <Link to="/tableView">Applications</Link>
                     </li>
                 )}
                 {!user ? (
                     <li>
-                        <a href="/login">Login</a>
+                        <Link to="/login">Login</Link>
                     </li>
                 ) : (
                     <li>
-                        <a href="#" onClick={handleLogout}>Logout</a>
+                        <button onClick={handleLogout} className="nav-button">
+                            Logout
+                        </button>
                     </li>
                 )}
             </ul>
