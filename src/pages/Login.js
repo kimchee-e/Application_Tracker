@@ -6,6 +6,7 @@ const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { login, signup } = useAuth();
@@ -13,6 +14,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        if (!isLogin && password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
@@ -31,6 +38,14 @@ const Login = () => {
         setIsLoading(false);
     };
 
+    const switchMode = (mode) => {
+        setIsLogin(mode);
+        setError('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+    };
+
     return (
         <div className="auth-container">
             <div className="auth-card">
@@ -39,13 +54,13 @@ const Login = () => {
                 <div className="auth-toggle">
                     <button 
                         className={isLogin ? 'active' : ''} 
-                        onClick={() => setIsLogin(true)}
+                        onClick={() => switchMode(true)}
                     >
                         Sign In
                     </button>
                     <button 
                         className={!isLogin ? 'active' : ''} 
-                        onClick={() => setIsLogin(false)}
+                        onClick={() => switchMode(false)}
                     >
                         Sign Up
                     </button>
@@ -72,6 +87,17 @@ const Login = () => {
                             required
                         />
                     </div>
+                    {!isLogin && (
+                        <div className="form-group">
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm your password"
+                                required
+                            />
+                        </div>
+                    )}
                     <button 
                         type="submit" 
                         disabled={isLoading}
