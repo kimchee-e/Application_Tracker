@@ -1,23 +1,31 @@
-import "./../styles/Navbar.css"
+import { Link, useLocation } from "react-router-dom";
+import "./../styles/Navbar.css";
 
 const Navbar = () => {
-    return (
-      <nav className="nav">
-          <a href="/" className="site-name">Website Name</a>
-          <ul>
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li>
-                <a href="/tableView">Applications</a>
-            </li>
-            <li>
-                <a href="/extension">Extension</a>
-            </li>
-          </ul>
-      </nav>
-    );
-  };
-  
-  export default Navbar;
-  
+  const location = useLocation(); // Get the current route
+
+  return (
+    <nav className="nav">
+      <Link to="/" className="site-name">Jobly</Link>
+      <ul>
+        <li>
+          <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link to="/tableView" className={`nav-link ${location.pathname === "/tableView" ? "active" : ""}`}>
+            Applications
+          </Link>
+        </li>
+        <li>
+          <Link to="/extension" className={`nav-link ${location.pathname === "/extension" ? "active" : ""}`}>
+            Extension
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
+
+export default Navbar;

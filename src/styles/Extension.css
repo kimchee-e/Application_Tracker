@@ -1,0 +1,67 @@
+/* Extension.css */
+
+.extension-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+.extension-page h1 {
+    font-size: 2.5rem;
+    color: #283618;
+    margin-bottom: 20px;
+}
+
+.extension-page p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.features h2,
+.instructions h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.features ul {
+    list-style-type: disc;
+    padding: 0;
+    margin: 0 auto 20px;
+    max-width: 600px;
+    text-align: left;
+}
+
+.features li {
+    font-size: 1.1rem;
+    margin: 8px 0;
+}
+
+.install-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #283618;
+    color: #f0f5e3;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 20px 0;
+    transition: background-color 0.3s;
+}
+
+.install-button:hover {
+    background-color: #0056b3;
+}
+
+.instructions {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.instructions p {
+    font-size: 1rem;
+    margin: 10px 0;
+}
