@@ -7,7 +7,7 @@ body {
 }
 
 .nav {
-    background-color: #283618;
+    background-color: #38566e;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -28,10 +28,11 @@ body {
     gap: 0.1rem;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
 .nav a {
-    color: #f0f5e3;
+    color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
     position: relative;
@@ -55,6 +56,19 @@ body {
     bottom: -5px; /* Space between link and bar */
     left: 0;
     border-radius: 2px; /* Optional: rounded corners for the bar */
+}
+
+.nav-button {
+    /* font-size: 18px; */
+    background: #4e7290;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background: #49647b;
 }
 
 @media (max-width: 600px) {

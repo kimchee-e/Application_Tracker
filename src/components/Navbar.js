@@ -1,31 +1,49 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 import "./../styles/Navbar.css";
 
 const Navbar = () => {
-  const location = useLocation(); // Get the current route
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
-  return (
-    <nav className="nav">
-      <Link to="/" className="site-name">Jobly</Link>
-      <ul>
-        <li>
-          <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link to="/tableView" className={`nav-link ${location.pathname === "/tableView" ? "active" : ""}`}>
-            Applications
-          </Link>
-        </li>
-        <li>
-          <Link to="/extension" className={`nav-link ${location.pathname === "/extension" ? "active" : ""}`}>
-            Extension
-          </Link>
-        </li>
-      </ul>
-    </nav>
-  );
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/');
+        } catch (error) {
+            console.error('Failed to log out');
+        }
+    };
+
+    return (
+        <nav className="nav">
+            <Link to="/" className="site-name">Jobly</Link>
+            <ul>
+                <li>
+                    <Link to="/">Home</Link>
+                </li>
+                {user && (
+                    <li>
+                        <Link to="/tableView">Applications</Link>
+                    </li>
+                )}
+                <li>
+                    <Link to="/extension">Extension</Link>
+                </li>
+                {!user ? (
+                    <li>
+                        <Link to="/login">Login</Link>
+                    </li>
+                ) : (
+                    <li>
+                        <button onClick={handleLogout} className="nav-button">
+                            Logout
+                        </button>
+                    </li>
+                )}
+            </ul>
+        </nav>
+    );
 };
 
 export default Navbar;

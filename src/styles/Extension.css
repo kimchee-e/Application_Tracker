@@ -1,67 +1,99 @@
 /* Extension.css */
 
-.extension-page {
-    max-width: 800px;
+.extension-container {
+    min-height: calc(100vh - 60px);
+    padding: 0 24px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
-    font-family: Arial, sans-serif;
-    color: #333;
+    background: white;
+}
+
+.main-section {
+    padding: 120px 0 60px;
     text-align: center;
 }
 
-.extension-page h1 {
-    font-size: 2.5rem;
-    color: #283618;
-    margin-bottom: 20px;
+.main-section h1 {
+    font-size: 64px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: #38566e;
 }
 
-.extension-page p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
-
-.features h2,
-.instructions h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.features ul {
-    list-style-type: disc;
-    padding: 0;
-    margin: 0 auto 20px;
-    max-width: 600px;
-    text-align: left;
-}
-
-.features li {
-    font-size: 1.1rem;
-    margin: 8px 0;
+.main-section p {
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 40px;
 }
 
 .install-button {
-    display: inline-block;
-    padding: 15px 30px;
-    background-color: #283618;
-    color: #f0f5e3;
-    font-size: 1.2rem;
+    padding: 16px 32px;
+    font-size: 18px;
+    background: #38566e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     text-decoration: none;
-    border-radius: 5px;
-    margin: 20px 0;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .install-button:hover {
-    background-color: #0056b3;
+    background: #2d4255;
+    transform: translateY(-2px);
 }
 
-.instructions {
-    margin-top: 40px;
-    text-align: left;
+.features {
+    padding: 80px 0;
 }
 
-.instructions p {
-    font-size: 1rem;
-    margin: 10px 0;
+.features h2 {
+    color: #38566e;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: #f8f9fa;
+    padding: 40px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    color: #38566e;
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 0 20px;
+    }
+
+    .main-section h1 {
+        font-size: 40px;
+    }
+
+    .main-section p {
+        font-size: 20px;
+    }
 }

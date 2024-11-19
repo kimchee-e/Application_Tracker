@@ -1,16 +1,14 @@
 /* TableView.css */
 
-.table-view-page {
+.table-view-container {
   padding: 20px;
   font-family: Arial, sans-serif;
-  /* max-width: 1000px; */
   margin: 0 auto;
-  background-color: #f0f5e3;
 }
 
-.table-view-page h1 {
+.table-view-container h1 {
   font-size: 2rem;
-  color: #333;
+  color: #38566e;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -19,7 +17,7 @@ button {
   display: inline-block;
   margin: 10px 0;
   padding: 10px 15px;
-  background-color: #283618;
+  background-color: #38566e;
   color: #f0f5e3;
   border: none;
   border-radius: 4px;
@@ -39,29 +37,34 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.job-table thead {
+  background-color: #38566e;
+  color: #ffffff;
+}
+
 .job-table th,
 .job-table td {
   padding: 12px 15px;
   text-align: left;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
 }
 
 .job-table th {
-  background-color: #f4f4f4;
-  font-weight: bold;
-  color: #333;
+  text-transform: uppercase;
+  font-size: 14px;
+  border-bottom: 2px solid #cccccc;
 }
 
-.job-table tr:nth-child(even) {
-  background-color: #f8f9f7;
+.job-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.job-table tr:nth-child(odd) {
-  background-color: #f0f5eb;
+.job-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
 }
 
-.job-table tr:hover {
-  background-color: #f1f1f1;
+.job-table tbody tr:hover {
+  background-color: #e4edf5;
 }
 
 .job-table td {

@@ -1,101 +1,92 @@
 /* HomePage.css */
 
-.home-page {
-    padding: 40px 20px;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
+.home-container {
+    min-height: calc(100vh - 60px);
+    padding: 0 24px;
+    max-width: 1200px;
     margin: 0 auto;
-    color: #333;
-    border-radius: 8px;
-    /* background-color: #e9edc9; */
-  }
-  
-  .home-page h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: #000000;
+    background: white;
+}
+
+.main-section {
+    padding: 120px 0 60px;
     text-align: center;
-  }
+}
   
-  .home-page p {
-    font-size: 1.1em;
-    margin-bottom: 30px;
-    text-align: center;
-  }
+.main-section h1 {
+    font-size: 64px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: #38566e;
+}
   
-  /* .navigation-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.main-section p {
+    font-size: 24px;
+    color: #555;
     margin-bottom: 40px;
-  }
+}
   
-  .navigation-buttons button {
-    padding: 12px 24px;
-    background-color: #4CAF50;
+.start-button {
+    padding: 16px 32px;
+    font-size: 18px;
+    background: #38566e;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-  }
-  
-  .navigation-buttons button:hover {
-    background-color: #45a049;
-  } */
-  
-  .overview {
-    background-color: #f6f9ef;
-    padding: 20px;
+}
+
+.start-button:hover {
+    background: #2d4255;
+}
+
+.features {
+    padding: 80px 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: #f8f9fa;
+    padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-  }
-  
-  .overview h2 {
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #333;
-  }
-  
-  .overview div {
-    font-size: 1.1em;
-    margin: 8px 0;
-  }
-  
-  .recent-applications {
-    margin-bottom: 30px;
-  }
-  
-  .recent-applications h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .recent-applications ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .recent-applications li {
-    padding: 10px 15px;
-    background-color: #f6f9ef;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .recent-applications li:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .recent-applications li span {
-    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-card h2 {
+    font-size: 24px;
+    color: #38566e;
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    font-size: 16px;
     color: #555;
-  }
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 0 20px;
+    }
+
+    .main-section h1 {
+        font-size: 40px;
+    }
+
+    .main-section p {
+        font-size: 20px;
+    }
+}
