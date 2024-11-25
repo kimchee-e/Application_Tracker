@@ -116,29 +116,41 @@
     color: #666;
 }
 
-.delete-button {
-    background-color: #dc3545;
-    padding: 6px 12px;
-    margin: 0;
-}
-
-.delete-button:hover {
-    background-color: #c82333;
-}
-
 .action-buttons {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+    align-items: center;
+}
+
+.edit-button, .delete-button {
+    min-width: 64px;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    cursor: pointer;
 }
 
 .edit-button {
-    background-color: #38566e;
-    padding: 6px 12px;
-    margin: 0;
+    color: #404040;
 }
 
 .edit-button:hover {
-    background-color: #2d4255;
+    border-color: #404040;
+    background-color: #f8f8f8;
+}
+
+.delete-button {
+    color: #666;
+}
+
+.delete-button:hover {
+    color: #dc3545;
+    border-color: #dc3545;
+    background-color: #fff5f5;
 }
 
 .application-form h2 {
