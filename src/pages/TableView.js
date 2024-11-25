@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from '../context/AuthContext';
-import { getApplications, addApplication } from '../utils/firestore';
+import { getApplications, addApplication, deleteApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
 
 const TableView = () => {
@@ -37,6 +37,19 @@ const TableView = () => {
         }
     };
 
+    const handleDeleteApplication = async (applicationId) => {
+        if (!window.confirm('Are you sure you want to delete this application?')) {
+            return;
+        }
+
+        try {
+            await deleteApplication(applicationId);
+            await loadApplications();
+        } catch (error) {
+            console.error('Failed to delete application:', error);
+        }
+    };
+
     if (loading) {
         return <div className="table-view-container">Loading...</div>;
     }
@@ -69,6 +82,7 @@ const TableView = () => {
                         <th>Job Type</th>
                         <th>Date Applied</th>
                         <th>Location</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,11 +95,19 @@ const TableView = () => {
                                 <td>{job.jobType}</td>
                                 <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
                                 <td>{job.location}</td>
+                                <td>
+                                    <button 
+                                        className="delete-button"
+                                        onClick={() => handleDeleteApplication(job.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="6" className="empty-message">
+                            <td colSpan="7" className="empty-message">
                                 No job applications found.
                             </td>
                         </tr>

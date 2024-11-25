@@ -46,7 +46,7 @@ button:hover {
 .job-table td {
   padding: 12px 15px;
   text-align: left;
-  /* border: 1px solid #ddd; */
+  vertical-align: middle;
 }
 
 .job-table th {
@@ -127,4 +127,14 @@ button:hover {
     text-align: center;
     padding: 20px;
     color: #666;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    padding: 6px 12px;
+    margin: 0;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
 }
