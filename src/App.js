@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import TableView from './pages/TableView';
 import Home from './pages/Home';
 import Extension from './pages/Extension';
@@ -16,25 +17,34 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" />;
     }
 
-    return children;
+    return (
+        <div className="authenticated-layout">
+            <Sidebar />
+            <div className="content-with-sidebar">
+                {children}
+            </div>
+        </div>
+    );
 };
 
 function App() {
-
     return (
         <BrowserRouter>
             <AuthProvider>
                 <div className="App">
-                    <Navbar />
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/" element={<><Navbar /><Home /></>} />
+                        <Route path="/login" element={<><Navbar /><Login /></>} />
                         <Route path="/tableView" element={
                             <ProtectedRoute>
                                 <TableView />
                             </ProtectedRoute>
                         } />
-                        <Route path="/extension" element={<Extension />} />
+                        <Route path="/extension" element={
+                            <ProtectedRoute>
+                                <Extension />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </div>
             </AuthProvider>

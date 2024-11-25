@@ -40,3 +40,16 @@
 /* .App {
   background-color: #f0f5e3;
 } */
+
+.authenticated-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.content-with-sidebar {
+    flex: 1;
+    margin-left: 240px;
+    background: #fafafa;
+    min-height: 100vh;
+    padding: 24px;
+}
