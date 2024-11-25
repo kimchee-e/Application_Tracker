@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from '../context/AuthContext';
-import { getApplications, addApplication, deleteApplication } from '../utils/firestore';
+import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
 
 const TableView = () => {
@@ -51,9 +51,14 @@ const TableView = () => {
         }
     };
 
-    const handleEditClick = (applicationId) => {
-        setEditingId(applicationId);
-        setShowAddForm(false);
+    const handleEditApplication = async (applicationData) => {
+        try {
+            await updateApplication(editingId, applicationData);
+            await loadApplications();
+            setEditingId(null);
+        } catch (error) {
+            console.error('Failed to update application:', error);
+        }
     };
 
     const handleCancelEdit = () => {
@@ -68,18 +73,29 @@ const TableView = () => {
         <div className="table-view-container">
             <div className="table-header">
                 <h1>Job Applications</h1>
-                <button 
-                    className="add-button"
-                    onClick={() => setShowAddForm(!showAddForm)}
-                >
-                    {showAddForm ? 'Cancel' : '+ New Application'}
-                </button>
+                {!editingId && (
+                    <button 
+                        className="add-button"
+                        onClick={() => setShowAddForm(!showAddForm)}
+                    >
+                        {showAddForm ? 'Cancel' : '+ New Application'}
+                    </button>
+                )}
             </div>
 
-            {showAddForm && (
-                <AddApplicationForm 
+            {showAddForm && !editingId && (
+                <ApplicationForm 
                     onSubmit={handleAddApplication}
                     onCancel={() => setShowAddForm(false)}
+                />
+            )}
+
+            {editingId && (
+                <ApplicationForm 
+                    initialData={applications.find(app => app.id === editingId)}
+                    onSubmit={handleEditApplication}
+                    onCancel={handleCancelEdit}
+                    isEditing
                 />
             )}
 
@@ -108,7 +124,7 @@ const TableView = () => {
                                 <td className="action-buttons">
                                     <button 
                                         className="edit-button"
-                                        onClick={() => handleEditClick(job.id)}
+                                        onClick={() => setEditingId(job.id)}
                                     >
                                         Edit
                                     </button>
@@ -134,13 +150,13 @@ const TableView = () => {
     );
 };
 
-const AddApplicationForm = ({ onSubmit, onCancel }) => {
+const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = false }) => {
     const [formData, setFormData] = useState({
-        jobTitle: '',
-        company: '',
-        status: 'Applied',
-        jobType: 'Internship',
-        location: ''
+        jobTitle: initialData?.jobTitle || '',
+        company: initialData?.company || '',
+        status: initialData?.status || 'Applied',
+        jobType: initialData?.jobType || 'Internship',
+        location: initialData?.location || ''
     });
 
     const handleSubmit = (e) => {
@@ -158,6 +174,7 @@ const AddApplicationForm = ({ onSubmit, onCancel }) => {
 
     return (
         <form onSubmit={handleSubmit} className="application-form">
+            <h2>{isEditing ? 'Edit Application' : 'Add Application'}</h2>
             <input
                 type="text"
                 name="jobTitle"
@@ -202,8 +219,12 @@ const AddApplicationForm = ({ onSubmit, onCancel }) => {
                 required
             />
             <div className="form-buttons">
-                <button type="submit">Add Application</button>
-                <button type="button" onClick={onCancel}>Cancel</button>
+                <button type="submit">
+                    {isEditing ? 'Save Changes' : 'Add Application'}
+                </button>
+                <button type="button" onClick={onCancel}>
+                    Cancel
+                </button>
             </div>
         </form>
     );

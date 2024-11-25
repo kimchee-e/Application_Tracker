@@ -153,3 +153,21 @@ button:hover {
 .edit-button:hover {
     background-color: #2d4255;
 }
+
+.application-form h2 {
+    color: #38566e;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.form-buttons button[type="submit"] {
+    background-color: #38566e;
+}
+
+.form-buttons button[type="button"] {
+    background-color: #6c757d;
+}
+
+.form-buttons button[type="button"]:hover {
+    background-color: #5a6268;
+}
