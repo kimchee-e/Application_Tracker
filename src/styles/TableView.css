@@ -138,3 +138,18 @@ button:hover {
 .delete-button:hover {
     background-color: #c82333;
 }
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-button {
+    background-color: #38566e;
+    padding: 6px 12px;
+    margin: 0;
+}
+
+.edit-button:hover {
+    background-color: #2d4255;
+}

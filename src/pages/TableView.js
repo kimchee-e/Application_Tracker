@@ -7,6 +7,7 @@ const TableView = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const { user } = useAuth();
 
     const loadApplications = useCallback(async () => {
@@ -48,6 +49,15 @@ const TableView = () => {
         } catch (error) {
             console.error('Failed to delete application:', error);
         }
+    };
+
+    const handleEditClick = (applicationId) => {
+        setEditingId(applicationId);
+        setShowAddForm(false);
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
     };
 
     if (loading) {
@@ -95,7 +105,13 @@ const TableView = () => {
                                 <td>{job.jobType}</td>
                                 <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
                                 <td>{job.location}</td>
-                                <td>
+                                <td className="action-buttons">
+                                    <button 
+                                        className="edit-button"
+                                        onClick={() => handleEditClick(job.id)}
+                                    >
+                                        Edit
+                                    </button>
                                     <button 
                                         className="delete-button"
                                         onClick={() => handleDeleteApplication(job.id)}
