@@ -1,5 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { 
+    House, 
+    ChartLineUp, 
+    ListChecks, 
+    Calendar, 
+    GoogleChromeLogo,
+    Gear, 
+    SignOut 
+} from '@phosphor-icons/react';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
@@ -19,27 +28,27 @@ const Sidebar = () => {
             <Link to="/" className="logo">Jobly</Link>
             <nav>
                 <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-                    Home
-                </Link>
-                <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
-                    Dashboard
+                    <House size={20} weight="regular" /> Home
                 </Link>
                 <Link to="/tableView" className={location.pathname === '/tableView' ? 'active' : ''}>
-                    Applications
+                    <ListChecks size={20} weight="regular" /> Applications
+                </Link>
+                <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
+                    <ChartLineUp size={20} weight="regular" /> Dashboard
                 </Link>
                 <Link to="/calendar" className={location.pathname === '/calendar' ? 'active' : ''}>
-                    Calendar
+                    <Calendar size={20} weight="regular" /> Calendar
                 </Link>
                 <Link to="/extension" className={location.pathname === '/extension' ? 'active' : ''}>
-                    Extension
+                    <GoogleChromeLogo size={20} weight="regular" /> Extension
                 </Link>
             </nav>
             <div className="bottom-nav">
                 <Link to="/settings" className={location.pathname === '/settings' ? 'active' : ''}>
-                    Settings
+                    <Gear size={20} weight="regular" /> Settings
                 </Link>
                 <button className="nav-button" onClick={handleLogout}>
-                    Log out
+                    <SignOut size={20} weight="regular" /> Log out
                 </button>
             </div>
         </div>
