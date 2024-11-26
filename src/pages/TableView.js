@@ -13,6 +13,7 @@ const TableView = () => {
     const [loading, setLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const { user } = useAuth();
 
     const loadApplications = useCallback(async () => {
@@ -70,6 +71,15 @@ const TableView = () => {
         setEditingId(null);
     };
 
+    const filteredApplications = applications.filter(app => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            app.jobTitle.toLowerCase().includes(searchLower) ||
+            app.company.toLowerCase().includes(searchLower) ||
+            app.location.toLowerCase().includes(searchLower)
+        );
+    });
+
     if (loading) {
         return <div className="table-view-container">Loading...</div>;
     }
@@ -95,6 +105,8 @@ const TableView = () => {
                         type="text"
                         placeholder="Search"
                         className="search-input"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
             </div>
@@ -128,8 +140,8 @@ const TableView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {applications.length > 0 ? (
-                        applications.map((job) => (
+                    {filteredApplications.length > 0 ? (
+                        filteredApplications.map((job) => (
                             <tr key={job.id}>
                                 <td>{job.jobTitle}</td>
                                 <td>{job.company}</td>
@@ -156,7 +168,7 @@ const TableView = () => {
                     ) : (
                         <tr>
                             <td colSpan="7" className="empty-message">
-                                No job applications found.
+                                {searchTerm ? 'No matching applications found.' : 'No job applications found.'}
                             </td>
                         </tr>
                     )}
