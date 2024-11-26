@@ -121,9 +121,9 @@ const TableView = () => {
         <div className="table-view-container">
             <div className="page-header">
                 <div className="header-content">
-                    <h1>Job Applications</h1>
+                    <h1>Internship Applications</h1>
                     <p className="header-description">
-                        Track and manage your job applications. 
+                        Track and manage your internship applications. 
                     </p>
                 </div>
                 {!editingId && (
@@ -301,6 +301,28 @@ const TableView = () => {
                     )}
                 </tbody>
             </table>
+
+            <div className="table-footer">
+                <div className="rows-per-page">
+                    <span>1-8 of 8</span>
+                    <span className="dot">•</span>
+                    <span>Results per page</span>
+                    <select className="page-select">
+                        <option value={10}>10</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                    </select>
+                </div>
+                <div className="pagination-controls">
+                    <button className="page-button" disabled>
+                        {'<'}
+                    </button>
+                    <span>1 / 8</span>
+                    <button className="page-button" disabled>
+                        {'>'}
+                    </button>
+                </div>
+            </div>
 
             {notification && (
                 <div className="notification">
