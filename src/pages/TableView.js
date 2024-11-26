@@ -139,6 +139,21 @@ const TableView = () => {
         setSelectedApplication(application);
     };
 
+    const handleDragStart = (e, application) => {
+        e.dataTransfer.setData('applicationId', application.id);
+    };
+    
+    const handleDrop = async (e, newStatus) => {
+        e.preventDefault();
+        const applicationId = e.dataTransfer.getData('applicationId');
+        const application = applications.find(app => app.id === applicationId);
+        
+        if (application && application.status !== newStatus) {
+            await updateApplication(applicationId, { ...application, status: newStatus });
+            await loadApplications();
+        }
+    };
+
     if (loading) {
         return <div className="table-view-container">Loading...</div>;
     }
@@ -347,7 +362,12 @@ const TableView = () => {
                 <div className="card-view">
                     <div className="status-columns">
                         {['Applied', 'Interview', 'Offer', 'Rejected'].map(status => (
-                            <div key={status} className="status-column">
+                            <div 
+                                key={status} 
+                                className="status-column"
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => handleDrop(e, status)}
+                            >
                                 <div className="column-header">
                                     <h3>{status}</h3>
                                     <span className="count">
@@ -361,6 +381,8 @@ const TableView = () => {
                                             <div 
                                                 key={application.id} 
                                                 className="application-card"
+                                                draggable
+                                                onDragStart={(e) => handleDragStart(e, application)}
                                                 onClick={() => handleRowClick(application)}
                                             >
                                                 <h4>{application.jobTitle}</h4>
@@ -370,17 +392,15 @@ const TableView = () => {
                                                     <span className="date">
                                                         {application.dateApplied?.toLocaleDateString() || 'No date'}
                                                     </span>
-                                                    <div className="card-actions">
-                                                        <button 
-                                                            className="edit-button"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setEditingId(application.id);
-                                                            }}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                    </div>
+                                                    <button 
+                                                        className="edit-button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setEditingId(application.id);
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
