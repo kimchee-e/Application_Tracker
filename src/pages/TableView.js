@@ -3,6 +3,10 @@ import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
 
+const StatusBadge = ({ status }) => {
+    return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
+};
+
 const TableView = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -117,7 +121,7 @@ const TableView = () => {
                             <tr key={job.id}>
                                 <td>{job.jobTitle}</td>
                                 <td>{job.company}</td>
-                                <td>{job.status}</td>
+                                <td><StatusBadge status={job.status} /></td>
                                 <td>{job.jobType}</td>
                                 <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
                                 <td>{job.location}</td>
