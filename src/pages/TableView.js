@@ -18,6 +18,7 @@ const TableView = () => {
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [showStatusFilter, setShowStatusFilter] = useState(false);
     const filterRef = useRef(null);
+    const [notification, setNotification] = useState(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -53,6 +54,8 @@ const TableView = () => {
             await addApplication(user.uid, applicationData);
             await loadApplications();
             setShowAddForm(false);
+            setNotification('Application added successfully');
+            setTimeout(() => setNotification(null), 3000);
         } catch (error) {
             console.error('Failed to add application:', error);
         }
@@ -76,6 +79,8 @@ const TableView = () => {
             await updateApplication(editingId, applicationData);
             await loadApplications();
             setEditingId(null);
+            setNotification('Application updated successfully');
+            setTimeout(() => setNotification(null), 3000);
         } catch (error) {
             console.error('Failed to update application:', error);
         }
@@ -272,6 +277,12 @@ const TableView = () => {
                     )}
                 </tbody>
             </table>
+
+            {notification && (
+                <div className="notification">
+                    {notification}
+                </div>
+            )}
         </div>
     );
 };
