@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, FunnelSimple } from '@phosphor-icons/react';
 
 const StatusBadge = ({ status }) => {
     return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
@@ -99,15 +99,21 @@ const TableView = () => {
             </div>
 
             <div className="search-container">
-                <div className="search-bar">
-                    <MagnifyingGlass size={20} weight="regular" className="search-icon" />
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        className="search-input"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+                <div className="search-section">
+                    <div className="search-bar">
+                        <MagnifyingGlass size={18} weight="regular" className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            className="search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <button className="filter-button">
+                        <FunnelSimple size={18} weight="regular" />
+                        Filters
+                    </button>
                 </div>
             </div>
 
