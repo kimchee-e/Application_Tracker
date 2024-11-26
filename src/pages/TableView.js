@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
@@ -15,6 +15,20 @@ const TableView = () => {
     const [editingId, setEditingId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const { user } = useAuth();
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [showStatusFilter, setShowStatusFilter] = useState(false);
+    const filterRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (filterRef.current && !filterRef.current.contains(event.target)) {
+                setShowStatusFilter(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const loadApplications = useCallback(async () => {
         if (!user) return;
@@ -73,12 +87,26 @@ const TableView = () => {
 
     const filteredApplications = applications.filter(app => {
         const searchLower = searchTerm.toLowerCase();
-        return (
+        const matchesSearch = (
             app.jobTitle.toLowerCase().includes(searchLower) ||
             app.company.toLowerCase().includes(searchLower) ||
             app.location.toLowerCase().includes(searchLower)
         );
+        
+        return matchesSearch && (
+            selectedStatuses.length === 0 || 
+            selectedStatuses.includes(app.status)
+        );
     });
+
+    const handleStatusToggle = (status) => {
+        setSelectedStatuses(prev => {
+            if (prev.includes(status)) {
+                return prev.filter(s => s !== status);
+            }
+            return [...prev, status];
+        });
+    };
 
     if (loading) {
         return <div className="table-view-container">Loading...</div>;
@@ -110,10 +138,74 @@ const TableView = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button className="filter-button">
-                        <FunnelSimple size={18} weight="regular" />
-                        Filters
-                    </button>
+                    <div className="filter-container" ref={filterRef}>
+                        <button 
+                            className={`filter-button ${selectedStatuses.length > 0 ? 'active' : ''}`}
+                            onClick={() => setShowStatusFilter(!showStatusFilter)}
+                        >
+                            <FunnelSimple size={18} weight="regular" />
+                            Filters {selectedStatuses.length > 0 && `(${selectedStatuses.length})`}
+                        </button>
+                        {showStatusFilter && (
+                            <div className="status-filter-menu">
+                                <div className="filter-menu-header">
+                                    Filter by Status
+                                </div>
+                                <div className="filter-options">
+                                    <div className="filter-option">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedStatuses.includes('Applied')}
+                                                onChange={() => handleStatusToggle('Applied')}
+                                            />
+                                            <StatusBadge status="Applied" />
+                                        </label>
+                                    </div>
+                                    <div className="filter-option">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedStatuses.includes('Interview')}
+                                                onChange={() => handleStatusToggle('Interview')}
+                                            />
+                                            <StatusBadge status="Interview" />
+                                        </label>
+                                    </div>
+                                    <div className="filter-option">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedStatuses.includes('Offer')}
+                                                onChange={() => handleStatusToggle('Offer')}
+                                            />
+                                            <StatusBadge status="Offer" />
+                                        </label>
+                                    </div>
+                                    <div className="filter-option">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedStatuses.includes('Rejected')}
+                                                onChange={() => handleStatusToggle('Rejected')}
+                                            />
+                                            <StatusBadge status="Rejected" />
+                                        </label>
+                                    </div>
+                                </div>
+                                {selectedStatuses.length > 0 && (
+                                    <div className="filter-menu-footer">
+                                        <button 
+                                            className="clear-filters"
+                                            onClick={() => setSelectedStatuses([])}
+                                        >
+                                            Clear Filters
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
