@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
+import { MagnifyingGlass } from '@phosphor-icons/react';
 
 const StatusBadge = ({ status }) => {
     return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
@@ -85,6 +86,17 @@ const TableView = () => {
                         + New Application
                     </button>
                 )}
+            </div>
+
+            <div className="search-container">
+                <div className="search-bar">
+                    <MagnifyingGlass size={20} weight="regular" className="search-icon" />
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        className="search-input"
+                    />
+                </div>
             </div>
 
             {showAddForm && !editingId && (

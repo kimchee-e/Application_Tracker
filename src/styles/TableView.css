@@ -273,3 +273,39 @@
     background-color: #ffebee;
     color: #c62828;
 }
+
+.search-container {
+    margin-bottom: 24px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0 14px;
+    max-width: 300px;
+    height: 36px;
+}
+
+.search-bar:focus-within {
+    border-color: #404040;
+}
+
+.search-icon {
+    color: #666;
+    margin-right: 10px;
+}
+
+.search-input {
+    border: none;
+    padding: 0;
+    width: 100%;
+    font-size: 15px;
+    color: #2c2c2c;
+}
+
+.search-input:focus {
+    outline: none;
+}
