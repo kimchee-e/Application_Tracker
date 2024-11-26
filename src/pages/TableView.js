@@ -177,60 +177,86 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
     };
 
     return (
-        <form onSubmit={handleSubmit} className="application-form">
-            <h2>{isEditing ? 'Edit Application' : 'Add Application'}</h2>
-            <input
-                type="text"
-                name="jobTitle"
-                value={formData.jobTitle}
-                onChange={handleChange}
-                placeholder="Job Title"
-                required
-            />
-            <input
-                type="text"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                placeholder="Company"
-                required
-            />
-            <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-            >
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Offer">Offer</option>
-                <option value="Rejected">Rejected</option>
-            </select>
-            <select
-                name="jobType"
-                value={formData.jobType}
-                onChange={handleChange}
-            >
-                <option value="Internship">Internship</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-            </select>
-            <input
-                type="text"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="Location"
-                required
-            />
-            <div className="form-buttons">
-                <button type="submit">
-                    {isEditing ? 'Save Changes' : 'Add Application'}
-                </button>
-                <button type="button" onClick={onCancel}>
-                    Cancel
-                </button>
+        <div className="application-form-overlay">
+            <div className="application-form">
+                <h2>{isEditing ? 'Edit Application' : 'New Application'}</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="field">
+                        <label>Job Title</label>
+                        <input
+                            type="text"
+                            name="jobTitle"
+                            value={formData.jobTitle}
+                            onChange={handleChange}
+                            placeholder="e.g., Frontend Developer"
+                            required
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label>Company</label>
+                        <input
+                            type="text"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            placeholder="e.g., Apple"
+                            required
+                        />
+                    </div>
+
+                    <div className="field-row">
+                        <div className="field">
+                            <label>Status</label>
+                            <select
+                                name="status"
+                                value={formData.status}
+                                onChange={handleChange}
+                            >
+                                <option value="Applied">Applied</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Offer">Offer</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <div className="field">
+                            <label>Job Type</label>
+                            <select
+                                name="jobType"
+                                value={formData.jobType}
+                                onChange={handleChange}
+                            >
+                                <option value="Internship">Internship</option>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label>Location</label>
+                        <input
+                            type="text"
+                            name="location"
+                            value={formData.location}
+                            onChange={handleChange}
+                            placeholder="e.g., San Marcos, TX"
+                            required
+                        />
+                    </div>
+
+                    <div className="application-form-actions">
+                        <button type="button" onClick={onCancel} className="cancel">
+                            Cancel
+                        </button>
+                        <button type="submit" className="save">
+                            {isEditing ? 'Save Changes' : 'Add Application'}
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     );
 };
 
