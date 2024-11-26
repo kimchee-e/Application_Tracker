@@ -80,9 +80,9 @@ const TableView = () => {
                 {!editingId && (
                     <button 
                         className="add-button"
-                        onClick={() => setShowAddForm(!showAddForm)}
+                        onClick={() => setShowAddForm(true)}
                     >
-                        {showAddForm ? 'Cancel' : '+ New Application'}
+                        + New Application
                     </button>
                 )}
             </div>
