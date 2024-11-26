@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
 import { MagnifyingGlass, FunnelSimple } from '@phosphor-icons/react';
+import ApplicationDetail from '../components/ApplicationDetail';
 
 const StatusBadge = ({ status }) => {
     return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
@@ -21,6 +22,7 @@ const TableView = () => {
     const [notification, setNotification] = useState(null);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedApplication, setSelectedApplication] = useState(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -130,6 +132,10 @@ const TableView = () => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
         setCurrentPage(1);
+    };
+
+    const handleRowClick = (application) => {
+        setSelectedApplication(application);
     };
 
     if (loading) {
@@ -288,7 +294,11 @@ const TableView = () => {
                 <tbody>
                     {currentApplications.length > 0 ? (
                         currentApplications.map((job) => (
-                            <tr key={job.id}>
+                            <tr 
+                                key={job.id} 
+                                onClick={() => handleRowClick(job)}
+                                className="clickable-row"
+                            >
                                 <td>{job.jobTitle}</td>
                                 <td>{job.company}</td>
                                 <td><StatusBadge status={job.status} /></td>
@@ -320,6 +330,13 @@ const TableView = () => {
                     )}
                 </tbody>
             </table>
+
+            {selectedApplication && (
+                <ApplicationDetail
+                    application={selectedApplication}
+                    onClose={() => setSelectedApplication(null)}
+                />
+            )}
 
             <div className="table-footer">
                 <div className="rows-per-page">
