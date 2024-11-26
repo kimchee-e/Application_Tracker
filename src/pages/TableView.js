@@ -19,6 +19,8 @@ const TableView = () => {
     const [showStatusFilter, setShowStatusFilter] = useState(false);
     const filterRef = useRef(null);
     const [notification, setNotification] = useState(null);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -111,6 +113,23 @@ const TableView = () => {
             }
             return [...prev, status];
         });
+    };
+
+    const totalItems = filteredApplications.length;
+    const totalPages = Math.ceil(totalItems / rowsPerPage);
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, totalItems);
+    
+    const currentApplications = filteredApplications.slice(startIndex, endIndex);
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
+    const handleRowsPerPageChange = (event) => {
+        const newRowsPerPage = parseInt(event.target.value);
+        setRowsPerPage(newRowsPerPage);
+        setCurrentPage(1);
     };
 
     if (loading) {
@@ -267,8 +286,8 @@ const TableView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredApplications.length > 0 ? (
-                        filteredApplications.map((job) => (
+                    {currentApplications.length > 0 ? (
+                        currentApplications.map((job) => (
                             <tr key={job.id}>
                                 <td>{job.jobTitle}</td>
                                 <td>{job.company}</td>
@@ -304,21 +323,33 @@ const TableView = () => {
 
             <div className="table-footer">
                 <div className="rows-per-page">
-                    <span>1-8 of 8</span>
+                    <span>{`${startIndex + 1}-${endIndex} of ${totalItems}`}</span>
                     <span className="dot">•</span>
                     <span>Results per page</span>
-                    <select className="page-select">
+                    <select 
+                        className="page-select"
+                        value={rowsPerPage}
+                        onChange={handleRowsPerPageChange}
+                    >
                         <option value={10}>10</option>
                         <option value={25}>25</option>
                         <option value={50}>50</option>
                     </select>
                 </div>
                 <div className="pagination-controls">
-                    <button className="page-button" disabled>
+                    <button 
+                        className="page-button"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
                         {'<'}
                     </button>
-                    <span>1 / 8</span>
-                    <button className="page-button" disabled>
+                    <span>{currentPage} / {totalPages}</span>
+                    <button 
+                        className="page-button"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    >
                         {'>'}
                     </button>
                 </div>
