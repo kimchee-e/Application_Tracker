@@ -119,8 +119,13 @@ const TableView = () => {
 
     return (
         <div className="table-view-container">
-            <div className="table-header">
-                <h1>Job Applications</h1>
+            <div className="page-header">
+                <div className="header-content">
+                    <h1>Job Applications</h1>
+                    <p className="header-description">
+                        Track and manage your job applications. 
+                    </p>
+                </div>
                 {!editingId && (
                     <button 
                         className="add-button"
@@ -129,6 +134,25 @@ const TableView = () => {
                         + New Application
                     </button>
                 )}
+            </div>
+
+            <div className="table-stats">
+                <div className="stat-item">
+                    <span className="stat-number">{applications.length}</span>
+                    <span className="stat-label">Total Applications</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">
+                        {applications.filter(app => app.status === 'Interview').length}
+                    </span>
+                    <span className="stat-label">Interviews</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">
+                        {applications.filter(app => app.status === 'Offer').length}
+                    </span>
+                    <span className="stat-label">Offers</span>
+                </div>
             </div>
 
             <div className="search-container">
