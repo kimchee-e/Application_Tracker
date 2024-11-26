@@ -291,57 +291,105 @@ const TableView = () => {
                 />
             )}
 
-            <table className="job-table">
-                <thead>
-                    <tr>
-                        <th>Job Title</th>
-                        <th>Company</th>
-                        <th>Status</th>
-                        <th>Job Type</th>
-                        <th>Date Applied</th>
-                        <th>Location</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentApplications.length > 0 ? (
-                        currentApplications.map((job) => (
-                            <tr 
-                                key={job.id} 
-                                onClick={() => handleRowClick(job)}
-                                className="clickable-row"
-                            >
-                                <td>{job.jobTitle}</td>
-                                <td>{job.company}</td>
-                                <td><StatusBadge status={job.status} /></td>
-                                <td>{job.jobType}</td>
-                                <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
-                                <td>{job.location}</td>
-                                <td className="action-buttons">
-                                    <button 
-                                        className="edit-button"
-                                        onClick={() => setEditingId(job.id)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        className="delete-button"
-                                        onClick={() => handleDeleteApplication(job.id)}
-                                    >
-                                        Delete
-                                    </button>
+            {viewType === 'table' ? (
+                <table className="job-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Job Type</th>
+                            <th>Date Applied</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentApplications.length > 0 ? (
+                            currentApplications.map((job) => (
+                                <tr 
+                                    key={job.id} 
+                                    onClick={() => handleRowClick(job)}
+                                    className="clickable-row"
+                                >
+                                    <td>{job.jobTitle}</td>
+                                    <td>{job.company}</td>
+                                    <td><StatusBadge status={job.status} /></td>
+                                    <td>{job.jobType}</td>
+                                    <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
+                                    <td>{job.location}</td>
+                                    <td className="action-buttons">
+                                        <button 
+                                            className="edit-button"
+                                            onClick={() => setEditingId(job.id)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            className="delete-button"
+                                            onClick={() => handleDeleteApplication(job.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="empty-message">
+                                    {searchTerm ? 'No matching applications found.' : 'No job applications found.'}
                                 </td>
                             </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7" className="empty-message">
-                                {searchTerm ? 'No matching applications found.' : 'No job applications found.'}
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+                        )}
+                    </tbody>
+                </table>
+            ) : (
+                <div className="card-view">
+                    <div className="status-columns">
+                        {['Applied', 'Interview', 'Offer', 'Rejected'].map(status => (
+                            <div key={status} className="status-column">
+                                <div className="column-header">
+                                    <h3>{status}</h3>
+                                    <span className="count">
+                                        {filteredApplications.filter(app => app.status === status).length}
+                                    </span>
+                                </div>
+                                <div className="cards-container">
+                                    {filteredApplications
+                                        .filter(app => app.status === status)
+                                        .map(application => (
+                                            <div 
+                                                key={application.id} 
+                                                className="application-card"
+                                                onClick={() => handleRowClick(application)}
+                                            >
+                                                <h4>{application.jobTitle}</h4>
+                                                <p className="company">{application.company}</p>
+                                                <p className="location">{application.location}</p>
+                                                <div className="card-footer">
+                                                    <span className="date">
+                                                        {application.dateApplied?.toLocaleDateString() || 'No date'}
+                                                    </span>
+                                                    <div className="card-actions">
+                                                        <button 
+                                                            className="edit-button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setEditingId(application.id);
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {selectedApplication && (
                 <ApplicationDetail
