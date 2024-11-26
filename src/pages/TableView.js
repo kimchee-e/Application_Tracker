@@ -23,6 +23,7 @@ const TableView = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedApplication, setSelectedApplication] = useState(null);
+    const [viewType, setViewType] = useState('table');
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -259,6 +260,17 @@ const TableView = () => {
                                 )}
                             </div>
                         )}
+                    </div>
+                    <div className="view-switch">
+                        <span>Card View</span>
+                        <label className="toggle">
+                            <input 
+                                type="checkbox"
+                                checked={viewType === 'cards'}
+                                onChange={() => setViewType(viewType === 'table' ? 'cards' : 'table')}
+                            />
+                            <span className="toggle-slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
