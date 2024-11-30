@@ -28,15 +28,27 @@ export const getApplications = async (userId) => {
         id: doc.id,
         ...doc.data(),
         dateApplied: doc.data().dateApplied?.toDate() || null,
+        interviewDate: doc.data().interviewDate?.toDate() || null,
         createdAt: doc.data().createdAt?.toDate() || null
     }));
 };
 
 export const addApplication = async (userId, applicationData) => {
     const docRef = await addDoc(collection(db, APPLICATIONS_COLLECTION), {
-        ...applicationData,
         userId,
+        company: applicationData.company || '',
+        jobTitle: applicationData.jobTitle || '',
+        location: applicationData.location || '',
+        jobType: applicationData.jobType || '',
+        status: applicationData.status || 'Applied',
+        postingUrl: applicationData.postingUrl || '',
+        salary: applicationData.salary || '',
+        notes: applicationData.notes || '',
+        contactName: applicationData.contactName || '',
+        contactEmail: applicationData.contactEmail || '',
+        visaSponsorship: applicationData.visaSponsorship || false,
         dateApplied: serverTimestamp(),
+        interviewDate: applicationData.interviewDate || null,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     });
