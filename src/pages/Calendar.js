@@ -29,14 +29,16 @@ const Calendar = () => {
     useEffect(() => {
         const loadEvents = async () => {
             const applications = await getApplications(user.uid);
-            const calendarEvents = applications.map(app => ({
-                id: app.id,
-                title: `${app.company} - ${app.jobTitle}`,
-                start: app.dateApplied,
-                end: app.dateApplied,
-                status: app.status
-            }));
-            setEvents(calendarEvents);
+            const interviewEvents = applications
+                .filter(app => app.interviewDate)
+                .map(app => ({
+                    id: app.id,
+                    title: `Interview: ${app.company} - ${app.jobTitle}`,
+                    start: app.interviewDate,
+                    end: app.interviewDate,
+                    status: app.status
+                }));
+            setEvents(interviewEvents);
         };
 
         loadEvents();
