@@ -27,9 +27,9 @@ export const getApplications = async (userId) => {
     return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        dateApplied: doc.data().dateApplied?.toDate() || null,
-        interviewDate: doc.data().interviewDate?.toDate() || null,
-        createdAt: doc.data().createdAt?.toDate() || null
+        dateApplied: doc.data().dateApplied?.toDate?.() || null,
+        interviewDate: doc.data().interviewDate?.toDate?.() || null,
+        createdAt: doc.data().createdAt?.toDate?.() || null
     }));
 };
 
