@@ -467,7 +467,14 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
         company: initialData?.company || '',
         status: initialData?.status || 'Applied',
         jobType: initialData?.jobType || 'Internship',
-        location: initialData?.location || ''
+        location: initialData?.location || '',
+        postingUrl: initialData?.postingUrl || '',
+        salary: initialData?.salary || '',
+        notes: initialData?.notes || '',
+        contactName: initialData?.contactName || '',
+        contactEmail: initialData?.contactEmail || '',
+        visaSponsorship: initialData?.visaSponsorship || false,
+        interviewDate: initialData?.interviewDate || null
     });
 
     const handleSubmit = (e) => {
@@ -510,6 +517,92 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
                             placeholder="e.g., Apple"
                             required
                         />
+                    </div>
+
+                    <div className="field">
+                        <label>Job Posting URL</label>
+                        <input
+                            type="url"
+                            name="postingUrl"
+                            value={formData.postingUrl}
+                            onChange={handleChange}
+                            placeholder="https://"
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label>Salary</label>
+                        <input
+                            type="text"
+                            name="salary"
+                            value={formData.salary}
+                            onChange={handleChange}
+                            placeholder="e.g., $100,000/year"
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label>Notes</label>
+                        <textarea
+                            name="notes"
+                            value={formData.notes}
+                            onChange={handleChange}
+                            placeholder="Add notes you want to remember about this aplication..."
+                            rows="3"
+                        />
+                    </div>
+
+                    <div className="field-row">
+                        <div className="field">
+                            <label>Contact Name</label>
+                            <input
+                                type="text"
+                                name="contactName"
+                                value={formData.contactName}
+                                onChange={handleChange}
+                                placeholder="e.g., John Doe"
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label>Contact Email</label>
+                            <input
+                                type="email"
+                                name="contactEmail"
+                                value={formData.contactEmail}
+                                onChange={handleChange}
+                                placeholder="e.g., johndoe@gmail.com"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="field-row">
+                        <div className="field">
+                            <label>Interview Date</label>
+                            <input
+                                type="date"
+                                name="interviewDate"
+                                value={formData.interviewDate || ''}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="field checkbox-field">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="visaSponsorship"
+                                    checked={formData.visaSponsorship}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'visaSponsorship',
+                                            value: e.target.checked
+                                        }
+                                    })}
+                                />
+                                Visa Sponsorship Available
+                            </label>
+                        </div>
                     </div>
 
                     <div className="field-row">
