@@ -40,4 +40,23 @@ h1 {
 .number {
     font-size: 32px;
     color: #2c2c2c;
+}
+
+.sankey-container {
+    margin-top: 32px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.sankey-container h2 {
+    color: #2c2c2c;
+    font-size: 20px;
+    margin-bottom: 24px;
+}
+
+.sankey-chart {
+    height: 400px;
+    width: 100%;
 } 

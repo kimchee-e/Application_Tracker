@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getApplications } from '../utils/firestore';
 import '../styles/Dashboard.css';
+import { ResponsiveSankey } from '@nivo/sankey';
 
 const Dashboard = () => {
     const [applications, setApplications] = useState([]);
@@ -32,6 +33,26 @@ const Dashboard = () => {
     const offers = applications.filter(app => app.status === 'Offer').length;
     const rejected = applications.filter(app => app.status === 'Rejected').length;
 
+    const sankeyData = () => {
+        const pending = totalApplications - (interviews + rejected); 
+        return {
+            nodes: [
+                { id: 'Applied' },
+                { id: 'Pending' },
+                { id: 'Interview' },
+                { id: 'Offer' },
+                { id: 'Rejected' }
+            ],
+
+            links: [
+                {source: 'Applied', target: 'Pending', value: pending},
+                {source: 'Applied', target: 'Interview', value: interviews},
+                {source: 'Applied', target: 'Rejected', value: rejected},
+                {source: 'Interview', target: 'Offer', value: offers}
+            ]
+        };
+    };
+
     return (
         <div className="dashboard-page">
             <div className="page-header">
@@ -58,6 +79,28 @@ const Dashboard = () => {
                 <div className="card">
                     <h3>Rejected</h3>
                     <span className="number">{rejected}</span>
+                </div>
+            </div>
+            {/* Credit for the Sankey chart component: https://nivo.rocks/sankey/ */}
+            <div className="sankey-container">
+                <h2>Application Flow</h2>
+                <div className="sankey-chart">
+                    <ResponsiveSankey
+                        data={sankeyData()}
+                        margin={{ top: 40, right: 50, bottom: 40, left: 50 }}
+                        align="justify"
+                        colors={{ scheme: 'category10' }}
+                        nodeOpacity={1}
+                        nodeThickness={18}
+                        nodeSpacing={24}
+                        nodeBorderRadius={3}
+                        linkOpacity={0.5}
+                        linkContract={3}
+                        enableLinkGradient={true}
+                        labelPosition="outside"
+                        labelOrientation="vertical"
+                        labelPadding={16}
+                    />
                 </div>
             </div>
         </div>
