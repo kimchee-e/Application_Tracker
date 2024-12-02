@@ -8,6 +8,7 @@ import Extension from './pages/Extension';
 import Login from './pages/Login';
 import { useAuth, AuthProvider } from './context/AuthContext';
 import Calendar from './pages/Calendar';
+import Dashboard from './pages/Dashboard';
 
 const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
@@ -49,6 +50,11 @@ function App() {
                         <Route path="/calendar" element={
                             <ProtectedRoute>
                                 <Calendar />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/dashboard" element={
+                            <ProtectedRoute>
+                                <Dashboard />
                             </ProtectedRoute>
                         } />
                     </Routes>
