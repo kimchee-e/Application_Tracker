@@ -48,7 +48,7 @@ export const addApplication = async (userId, applicationData) => {
         contactEmail: applicationData.contactEmail || '',
         visaSponsorship: applicationData.visaSponsorship || false,
         dateApplied: serverTimestamp(),
-        interviewDate: applicationData.interviewDate || null,
+        interviewDate: applicationData.interviewDate ? new Date(applicationData.interviewDate) : null,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
     });
