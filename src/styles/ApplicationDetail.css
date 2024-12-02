@@ -85,4 +85,25 @@
     width: fit-content;
     padding: 6px 12px;
     font-size: 13px;
+}
+
+.posting-link {
+    color: #2196f3;
+    text-decoration: none;
+    margin-top: 8px;
+    display: inline-block;
+}
+
+.posting-link:hover {
+    text-decoration: underline;
+}
+
+.notes-field {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.notes-field p {
+    margin: 0;
 } 
