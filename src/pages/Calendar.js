@@ -45,14 +45,24 @@ const Calendar = () => {
     }, [user.uid]);
 
     return (
-        <div className="calendar-container">
-            <BigCalendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{height: 500 }}
-            />
+        <div className="calendar-page">
+            <div className="page-header">
+                <div className="header-content">
+                    <h1>Interview Calendar</h1>
+                    <p className="subheader">
+                        Track your upcoming interviews
+                    </p>
+                </div>
+            </div>
+            <div className="calendar-container">
+                <BigCalendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{height: 600 }}
+                />
+            </div>
         </div>
     );
 };
