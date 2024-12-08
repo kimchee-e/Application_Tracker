@@ -95,7 +95,7 @@ const TableView = () => {
             await updateApplication(editingId, applicationData);
             await loadApplications();
             setEditingId(null);
-            setNotification('Application updated successfully');
+            showNotification('Application updated successfully');
         } catch (error) {
             console.error('Failed to update application:', error);
         }
