@@ -3,41 +3,41 @@
 .home-container {
     min-height: calc(100vh - 60px);
     padding: 0 24px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     background: white;
 }
 
 .main-section {
-    padding: 120px 0 60px;
+    padding: 80px 0 60px;
     text-align: center;
 }
   
-.main-section h1 {
+.home-container .main-section h1 {
     font-size: 64px;
     line-height: 1.1;
     margin-bottom: 24px;
-    color: #38566e;
+    color: #2c2c2c;
 }
   
 .main-section p {
     font-size: 24px;
-    color: #555;
+    color: #666;
     margin-bottom: 40px;
 }
   
 .start-button {
-    padding: 16px 32px;
+    padding: 12px 24px;
     font-size: 18px;
-    background: #38566e;
+    background: #404040;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
 .start-button:hover {
-    background: #2d4255;
+    background: #2c2c2c;
 }
 
 .features {
@@ -52,24 +52,24 @@
     margin: 0 auto;
 }
 
-.feature-card {
+.home-container .feature-card {
     background: #f8f9fa;
     padding: 40px;
     border-radius: 8px;
     transition: transform 0.2s ease;
 }
 
-.feature-card:hover {
+.home-container .feature-card:hover {
     transform: translateY(-4px);
 }
 
-.feature-card h2 {
+.home-container .feature-card h2 {
     font-size: 24px;
-    color: #38566e;
+    color: #2c2c2c;
     margin-bottom: 16px;
 }
 
-.feature-card p {
+.home-container .feature-card p {
     font-size: 16px;
     color: #555;
     line-height: 1.6;
