@@ -1,5 +1,5 @@
 import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getApplications } from '../utils/firestore';
 import format from 'date-fns/format';
@@ -20,10 +20,13 @@ const localizer = dateFnsLocalizer({
 
 const Calendar = () => {
     const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { user } = useAuth();
 
-    useEffect(() => {
-        const loadInterviews = async () => {
+    const loadInterviews = useCallback(async () => {
+        if (!user) return;
+        
+        try {
             const applications = await getApplications(user.uid);
             const interviewEvents = applications
                 .filter(app => app.interviewDate)
@@ -35,10 +38,20 @@ const Calendar = () => {
                     status: app.status
                 }));
             setEvents(interviewEvents);
-        };
+        } catch (error) {
+            console.error('Error loading interviews:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [user]);
 
+    useEffect(() => {
         loadInterviews();
-    }, [user.uid]);
+    }, [loadInterviews]);
+
+    if (loading) {
+        return <div className="calendar-page">Loading...</div>;
+    }
 
     return (
         <div className="calendar-page">
