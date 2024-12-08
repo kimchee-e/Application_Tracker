@@ -10,16 +10,12 @@ import { enUS } from 'date-fns/locale';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/Calendar.css';
 
-const locales = {
-    'en-US': enUS,
-};
-
 const localizer = dateFnsLocalizer({
     format,
     parse,
     startOfWeek,
     getDay,
-    locales
+    locales: { enUS }
 });
 
 const Calendar = () => {
@@ -27,7 +23,7 @@ const Calendar = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-        const loadEvents = async () => {
+        const loadInterviews = async () => {
             const applications = await getApplications(user.uid);
             const interviewEvents = applications
                 .filter(app => app.interviewDate)
@@ -41,18 +37,16 @@ const Calendar = () => {
             setEvents(interviewEvents);
         };
 
-        loadEvents();
+        loadInterviews();
     }, [user.uid]);
 
     return (
         <div className="calendar-page">
             <div className="page-header">
-                <div className="header-content">
-                    <h1>Interview Calendar</h1>
-                    <p className="subheader">
+                <h1>Interview Calendar</h1>
+                <p>
                         Track your upcoming interviews
-                    </p>
-                </div>
+                </p>
             </div>
             <div className="calendar-container">
                 <BigCalendar
