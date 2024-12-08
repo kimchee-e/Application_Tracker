@@ -56,7 +56,7 @@ const Calendar = () => {
     return (
         <div className="calendar-page">
             <header>
-                <h1>Interview Calendar</h1>
+                <h1>Calendar</h1>
                 <p>Track your upcoming interviews</p>
             </header>
             <div className="calendar-container">
