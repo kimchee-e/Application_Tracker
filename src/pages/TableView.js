@@ -3,27 +3,32 @@ import { useAuth } from '../context/AuthContext';
 import { getApplications, addApplication, deleteApplication, updateApplication } from '../utils/firestore';
 import "./../styles/TableView.css";
 import { MagnifyingGlass, FunnelSimple } from '@phosphor-icons/react';
-import ApplicationDetail from '../components/ApplicationDetail';
 import ApplicationForm from '../components/ApplicationForm';
 
-const StatusBadge = ({ status }) => {
-    return <span className={`status-badge status-${status.toLowerCase()}`}>{status}</span>;
-};
+const StatusBadge = ({ status }) => (
+    <span className={`status-badge status-${status.toLowerCase()}`}>
+        {status}
+    </span>
+);
 
 const TableView = () => {
-    const [applications, setApplications] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showAddForm, setShowAddForm] = useState(false);
-    const [editingId, setEditingId] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
     const { user } = useAuth();
-    const [selectedStatuses, setSelectedStatuses] = useState([]);
-    const [showStatusFilter, setShowStatusFilter] = useState(false);
     const filterRef = useRef(null);
-    const [notification, setNotification] = useState(null);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [applications, setApplications] = useState([]);
+    
+    const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedApplication, setSelectedApplication] = useState(null);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [showAddForm, setShowAddForm] = useState(false);
+    const [showStatusFilter, setShowStatusFilter] = useState(false);
+    const [editingId, setEditingId] = useState(null);
+    const [notification, setNotification] = useState(null);
+
+    const totalApplications = applications.length;
+    const interviews = applications.filter(app => app.status === 'Interview').length;
+    const offers = applications.filter(app => app.status === 'Offer').length;
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -39,28 +44,32 @@ const TableView = () => {
     const loadApplications = useCallback(async () => {
         if (!user) return;
         
+        
         try {
             const data = await getApplications(user.uid);
             setApplications(data);
         } catch (error) {
-            console.error('Failed to load applications:', error);
+            console.error('Error loading applications:', error);
         } finally {
             setLoading(false);
         }
     }, [user]);
-
-    // Load applications on component mount
+    
     useEffect(() => {
         loadApplications();
     }, [loadApplications]);
+
+    const showNotification = (message) => {
+        setNotification(message);
+        setTimeout(() => setNotification(null), 3000);
+    };
 
     const handleAddApplication = async (applicationData) => {
         try {
             await addApplication(user.uid, applicationData);
             await loadApplications();
             setShowAddForm(false);
-            setNotification('Application added successfully');
-            setTimeout(() => setNotification(null), 3000);
+            showNotification('Application added successfully');
         } catch (error) {
             console.error('Failed to add application:', error);
         }
@@ -74,8 +83,10 @@ const TableView = () => {
         try {
             await deleteApplication(applicationId);
             await loadApplications();
+            showNotification('Application deleted');
+            
         } catch (error) {
-            console.error('Failed to delete application:', error);
+            console.error('Error deleting application:', error);
         }
     };
 
@@ -85,7 +96,6 @@ const TableView = () => {
             await loadApplications();
             setEditingId(null);
             setNotification('Application updated successfully');
-            setTimeout(() => setNotification(null), 3000);
         } catch (error) {
             console.error('Failed to update application:', error);
         }
@@ -96,32 +106,32 @@ const TableView = () => {
     };
 
     const filteredApplications = applications.filter(app => {
-        const searchLower = searchTerm.toLowerCase();
-        const matchesSearch = (
-            app.jobTitle.toLowerCase().includes(searchLower) ||
-            app.company.toLowerCase().includes(searchLower) ||
-            app.location.toLowerCase().includes(searchLower)
-        );
-        
-        return matchesSearch && (
-            selectedStatuses.length === 0 || 
-            selectedStatuses.includes(app.status)
-        );
+        if (searchTerm) {
+            const search = searchTerm.toLowerCase();
+            if (!app.jobTitle.toLowerCase().includes(search) && 
+                !app.company.toLowerCase().includes(search) && 
+                !app.location.toLowerCase().includes(search)) {
+                return false;
+            }
+        }
+        return selectedStatuses.length === 0 || selectedStatuses.includes(app.status);
     });
 
     const handleStatusToggle = (status) => {
         setSelectedStatuses(prev => {
-            if (prev.includes(status)) {
+            const isSelected = prev.includes(status);
+            if (isSelected) {
                 return prev.filter(s => s !== status);
+            } else {
+                return [...prev, status];
             }
-            return [...prev, status];
         });
     };
 
     const totalItems = filteredApplications.length;
     const totalPages = Math.ceil(totalItems / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = Math.min(startIndex + rowsPerPage, totalItems);
+    const endIndex = currentPage * rowsPerPage;
     
     const currentApplications = filteredApplications.slice(startIndex, endIndex);
 
@@ -135,134 +145,199 @@ const TableView = () => {
         setCurrentPage(1);
     };
 
-    const handleRowClick = (application) => {
-        setSelectedApplication(application);
-    };
-
     if (loading) {
-        return <div className="table-view-container">Loading...</div>;
+        return <div className="table-page">Loading...</div>;
     }
 
     return (
-        <div className="table-view-container">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1>Internship Applications</h1>
-                    <p className="header-description">
-                        Track and manage your internship applications. 
-                    </p>
-                </div>
-                {!editingId && (
-                    <button 
-                        className="add-button"
-                        onClick={() => setShowAddForm(true)}
-                    >
-                        + New Application
-                    </button>
-                )}
-            </div>
+        <div className="table-page">
+            <header>
+                <h1>Applications</h1>
+                <p>Track and manage your internship applications</p>
+            </header>
 
-            <div className="table-stats">
-                <div className="stat-item">
-                    <span className="stat-number">{applications.length}</span>
-                    <span className="stat-label">Total Applications</span>
+            <section className="stats-container">
+                <div className="metric-box">
+                    <span className="metric-value">{totalApplications}</span>
+                    <span className="metric-title">Total Applications</span>
                 </div>
-                <div className="stat-item">
-                    <span className="stat-number">
-                        {applications.filter(app => app.status === 'Interview').length}
-                    </span>
-                    <span className="stat-label">Interviews</span>
+                <div className="metric-box">
+                    <span className="metric-value">{interviews}</span>
+                    <span className="metric-title">Interviews</span>
                 </div>
-                <div className="stat-item">
-                    <span className="stat-number">
-                        {applications.filter(app => app.status === 'Offer').length}
-                    </span>
-                    <span className="stat-label">Offers</span>
+                <div className="metric-box">
+                    <span className="metric-value">{offers}</span>
+                    <span className="metric-title">Offers</span>
                 </div>
-            </div>
+            </section>
 
-            <div className="search-container">
-                <div className="search-section">
-                    <div className="search-bar">
-                        <MagnifyingGlass size={18} weight="regular" className="search-icon" />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="search-input"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+            <section className="table-container">
+                <div className="actions-bar">
+                    <div className="search-and-filters">
+                        <div className="search-bar">
+                            <MagnifyingGlass size={18} className="search-icon" />
+                            <input
+                                type="text"
+                                placeholder="Search applications"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <div className="filter-container" ref={filterRef}>
+                            <button onClick={() => setShowStatusFilter(!showStatusFilter)}>
+                                <FunnelSimple size={18} />
+                                Filters {selectedStatuses.length > 0 && `(${selectedStatuses.length})`}
+                            </button>
+                            {showStatusFilter && (
+                                <div className="status-filter-container">
+                                    <div className="filter-title">
+                                        Filter by Status
+                                    </div>
+                                    <div className="filter-options">
+                                        <div className="filter-option">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStatuses.includes('Applied')}
+                                                    onChange={() => handleStatusToggle('Applied')}
+                                                />
+                                                <StatusBadge status="Applied" />
+                                            </label>
+                                        </div>
+                                        <div className="filter-option">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStatuses.includes('Interview')}
+                                                    onChange={() => handleStatusToggle('Interview')}
+                                                />
+                                                <StatusBadge status="Interview" />
+                                            </label>
+                                        </div>
+                                        <div className="filter-option">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStatuses.includes('Offer')}
+                                                    onChange={() => handleStatusToggle('Offer')}
+                                                />
+                                                <StatusBadge status="Offer" />
+                                            </label>
+                                        </div>
+                                        <div className="filter-option">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStatuses.includes('Rejected')}
+                                                    onChange={() => handleStatusToggle('Rejected')}
+                                                />
+                                                <StatusBadge status="Rejected" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {selectedStatuses.length > 0 && (
+                                        <div className="filter-footer">
+                                            <button 
+                                                className="clear-filters"
+                                                onClick={() => setSelectedStatuses([])}
+                                            >
+                                                Clear Filters
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    <div className="filter-container" ref={filterRef}>
-                        <button 
-                            className={`filter-button ${selectedStatuses.length > 0 ? 'active' : ''}`}
-                            onClick={() => setShowStatusFilter(!showStatusFilter)}
-                        >
-                            <FunnelSimple size={18} weight="regular" />
-                            Filters {selectedStatuses.length > 0 && `(${selectedStatuses.length})`}
+                    {!editingId && (
+                        <button className="add-button" onClick={() => setShowAddForm(true)}>
+                            + New Application
                         </button>
-                        {showStatusFilter && (
-                            <div className="status-filter-menu">
-                                <div className="filter-menu-header">
-                                    Filter by Status
-                                </div>
-                                <div className="filter-options">
-                                    <div className="filter-option">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedStatuses.includes('Applied')}
-                                                onChange={() => handleStatusToggle('Applied')}
-                                            />
-                                            <StatusBadge status="Applied" />
-                                        </label>
-                                    </div>
-                                    <div className="filter-option">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedStatuses.includes('Interview')}
-                                                onChange={() => handleStatusToggle('Interview')}
-                                            />
-                                            <StatusBadge status="Interview" />
-                                        </label>
-                                    </div>
-                                    <div className="filter-option">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedStatuses.includes('Offer')}
-                                                onChange={() => handleStatusToggle('Offer')}
-                                            />
-                                            <StatusBadge status="Offer" />
-                                        </label>
-                                    </div>
-                                    <div className="filter-option">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedStatuses.includes('Rejected')}
-                                                onChange={() => handleStatusToggle('Rejected')}
-                                            />
-                                            <StatusBadge status="Rejected" />
-                                        </label>
-                                    </div>
-                                </div>
-                                {selectedStatuses.length > 0 && (
-                                    <div className="filter-menu-footer">
+                    )}
+                </div>
+
+                <table className="job-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Job Type</th>
+                            <th>Date Applied</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentApplications.length > 0 ? (
+                            currentApplications.map((job) => (
+                                <tr key={job.id}>
+                                    <td>{job.jobTitle}</td>
+                                    <td>{job.company}</td>
+                                    <td><StatusBadge status={job.status} /></td>
+                                    <td>{job.jobType}</td>
+                                    <td>{job.dateApplied ? new Date(job.dateApplied).toLocaleDateString() : 'No date'}</td>
+                                    <td>{job.location}</td>
+                                    <td className="row-actions">
                                         <button 
-                                            className="clear-filters"
-                                            onClick={() => setSelectedStatuses([])}
+                                            className="edit-button"
+                                            onClick={() => setEditingId(job.id)}
                                         >
-                                            Clear Filters
+                                            Edit
                                         </button>
-                                    </div>
-                                )}
-                            </div>
+                                        <button 
+                                            className="delete-button"
+                                            onClick={() => handleDeleteApplication(job.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="empty-message">
+                                    {searchTerm ? 'No matching applications found.' : 'No job applications found.'}
+                                </td>
+                            </tr>
                         )}
+                    </tbody>
+                </table>
+
+                <div className="table-footer">
+                    <div className="rows-per-page">
+                        <span>{`${startIndex + 1}-${endIndex} of ${totalItems}`}</span>
+                        <span className="dot">•</span>
+                        <span>Results per page</span>
+                        <select 
+                            className="page-select"
+                            value={rowsPerPage}
+                            onChange={handleRowsPerPageChange}
+                        >
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </select>
+                    </div>
+                    <div className="pagination-controls">
+                        <button 
+                            className="page-button"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            {'<'}
+                        </button>
+                        <span>{currentPage} / {totalPages}</span>
+                        <button 
+                            className="page-button"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            {'>'}
+                        </button>
                     </div>
                 </div>
-            </div>
+            </section>
 
             {showAddForm && !editingId && (
                 <ApplicationForm 
@@ -279,99 +354,6 @@ const TableView = () => {
                     isEditing
                 />
             )}
-
-            <table className="job-table">
-                <thead>
-                    <tr>
-                        <th>Job Title</th>
-                        <th>Company</th>
-                        <th>Status</th>
-                        <th>Job Type</th>
-                        <th>Date Applied</th>
-                        <th>Location</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentApplications.length > 0 ? (
-                        currentApplications.map((job) => (
-                            <tr 
-                                key={job.id} 
-                                onClick={() => handleRowClick(job)}
-                                className="clickable-row"
-                            >
-                                <td>{job.jobTitle}</td>
-                                <td>{job.company}</td>
-                                <td><StatusBadge status={job.status} /></td>
-                                <td>{job.jobType}</td>
-                                <td>{job.dateApplied?.toLocaleDateString() || 'No date'}</td>
-                                <td>{job.location}</td>
-                                <td className="action-buttons">
-                                    <button 
-                                        className="edit-button"
-                                        onClick={() => setEditingId(job.id)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        className="delete-button"
-                                        onClick={() => handleDeleteApplication(job.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="7" className="empty-message">
-                                {searchTerm ? 'No matching applications found.' : 'No job applications found.'}
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-
-            {selectedApplication && (
-                <ApplicationDetail
-                    application={selectedApplication}
-                    onClose={() => setSelectedApplication(null)}
-                />
-            )}
-
-            <div className="table-footer">
-                <div className="rows-per-page">
-                    <span>{`${startIndex + 1}-${endIndex} of ${totalItems}`}</span>
-                    <span className="dot">•</span>
-                    <span>Results per page</span>
-                    <select 
-                        className="page-select"
-                        value={rowsPerPage}
-                        onChange={handleRowsPerPageChange}
-                    >
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                    </select>
-                </div>
-                <div className="pagination-controls">
-                    <button 
-                        className="page-button"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
-                        {'<'}
-                    </button>
-                    <span>{currentPage} / {totalPages}</span>
-                    <button 
-                        className="page-button"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                    >
-                        {'>'}
-                    </button>
-                </div>
-            </div>
 
             {notification && (
                 <div className="notification">
