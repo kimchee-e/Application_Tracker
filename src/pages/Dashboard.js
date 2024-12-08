@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getApplications } from '../utils/firestore';
 import '../styles/Dashboard.css';
@@ -9,20 +9,22 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
 
-    useEffect(() => {
-        const loadApplications = async () => {
-            try {
-                const data = await getApplications(user.uid);
-                setApplications(data);
-            } catch (error) {
-                console.error('Error loading applications:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const loadApplications = useCallback(async () => {
+        if (!user) return;
+        
+        try {
+            const data = await getApplications(user.uid);
+            setApplications(data);
+        } catch (error) {
+            console.error('Error loading applications:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [user]);
 
+    useEffect(() => {
         loadApplications();
-    }, [user.uid]);
+    }, [loadApplications]);
 
     if (loading) {
         return <div className="dashboard-page">Loading...</div>;
@@ -34,7 +36,7 @@ const Dashboard = () => {
     const rejected = applications.filter(app => app.status === 'Rejected').length;
 
     const sankeyData = () => {
-        const pending = totalApplications - (interviews + rejected); 
+        const pending = totalApplications - (interviews + rejected); // Need to find a better way to do this for now chart looks weird 
         return {
             nodes: [
                 { id: 'Applied' },
@@ -55,15 +57,13 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-page">
-            <div className="page-header">
-                <div className="header-content">
-                    <h1>Dashboard</h1>
-                    <p className="subheader">
-                        Overview of your internship search
-                    </p>
-                </div>
-            </div>
-            <div className="metrics-container">
+            <header className="page-header">
+                <h1>Dashboard</h1>
+                <p>
+                    Here's how your internship search is going
+                </p>
+            </header>
+            <section className="metrics-container">
                 <div className="card">
                     <h3>Total Applications</h3>
                     <span className="number">{totalApplications}</span>
@@ -80,9 +80,9 @@ const Dashboard = () => {
                     <h3>Rejected</h3>
                     <span className="number">{rejected}</span>
                 </div>
-            </div>
+            </section>
             {/* Credit for the Sankey chart component: https://nivo.rocks/sankey/ */}
-            <div className="sankey-container">
+            <section className="sankey-container">
                 <h2>Application Flow</h2>
                 <div className="sankey-chart">
                     <ResponsiveSankey
@@ -102,7 +102,7 @@ const Dashboard = () => {
                         labelPadding={16}
                     />
                 </div>
-            </div>
+            </section>
         </div>
     );
 };
