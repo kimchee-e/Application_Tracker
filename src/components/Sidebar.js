@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
-    House, 
     ChartLineUp, 
     ListChecks, 
     Calendar, 
@@ -19,39 +18,36 @@ const Sidebar = () => {
         try {
             await logout();
         } catch (error) {
-            console.error('Failed to log out');
+            console.error('Failed to log out:', error);
         }
     };
 
     return (
-        <div className="sidebar">
+        <aside className="sidebar">
             <Link to="/" className="logo">Jobly</Link>
             <nav>
-                <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
-                    <House size={20} weight="regular" /> Home
-                </Link>
                 <Link to="/tableView" className={location.pathname === '/tableView' ? 'active' : ''}>
-                    <ListChecks size={20} weight="regular" /> Applications
+                    <ListChecks size={20} /> Applications
                 </Link>
                 <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
-                    <ChartLineUp size={20} weight="regular" /> Dashboard
+                    <ChartLineUp size={20} /> Dashboard
                 </Link>
                 <Link to="/calendar" className={location.pathname === '/calendar' ? 'active' : ''}>
-                    <Calendar size={20} weight="regular" /> Calendar
+                    <Calendar size={20} /> Calendar
                 </Link>
                 <Link to="/extension" className={location.pathname === '/extension' ? 'active' : ''}>
-                    <GoogleChromeLogo size={20} weight="regular" /> Extension
+                    <GoogleChromeLogo size={20} /> Extension
                 </Link>
             </nav>
             <div className="bottom-nav">
                 <Link to="/settings" className={location.pathname === '/settings' ? 'active' : ''}>
-                    <Gear size={20} weight="regular" /> Settings
+                    <Gear size={20} /> Settings
                 </Link>
                 <button className="nav-button" onClick={handleLogout}>
-                    <SignOut size={20} weight="regular" /> Log out
+                    <SignOut size={20} /> Log out
                 </button>
             </div>
-        </div>
+        </aside>
     );
 };
 
