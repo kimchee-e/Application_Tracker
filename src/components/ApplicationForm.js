@@ -17,136 +17,54 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
         interviewDate: initialData?.interviewDate || null
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formData);
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        onSubmit(formData);
+    };
+
     return (
-        <div className="application-form-overlay">
-            <div className="application-form">
-                <h2>{isEditing ? 'Edit Application' : 'New Application'}</h2>
+        <div className="form-page">
+            <div className="form-container">
+                <div className="form-header">
+                    <h2>{isEditing ? 'Edit Application' : 'Add Application'}</h2>
+                </div>
+                
                 <form onSubmit={handleSubmit}>
-                    <div className="field">
-                        <label>Job Title</label>
-                        <input
-                            type="text"
-                            name="jobTitle"
-                            value={formData.jobTitle}
-                            onChange={handleChange}
-                            placeholder="e.g., Frontend Developer"
-                            required
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Company</label>
-                        <input
-                            type="text"
-                            name="company"
-                            value={formData.company}
-                            onChange={handleChange}
-                            placeholder="e.g., Apple"
-                            required
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Job Posting URL</label>
-                        <input
-                            type="url"
-                            name="postingUrl"
-                            value={formData.postingUrl}
-                            onChange={handleChange}
-                            placeholder="https://"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Salary</label>
-                        <input
-                            type="text"
-                            name="salary"
-                            value={formData.salary}
-                            onChange={handleChange}
-                            placeholder="e.g., $100,000/year"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Notes</label>
-                        <textarea
-                            name="notes"
-                            value={formData.notes}
-                            onChange={handleChange}
-                            placeholder="Add notes you want to remember about this aplication..."
-                            rows="3"
-                        />
-                    </div>
-
-                    <div className="field-row">
-                        <div className="field">
-                            <label>Contact Name</label>
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label>Job Title</label>
                             <input
                                 type="text"
-                                name="contactName"
-                                value={formData.contactName}
+                                name="jobTitle"
+                                value={formData.jobTitle}
                                 onChange={handleChange}
-                                placeholder="e.g., John Doe"
+                                placeholder="e.g., Software Engineer"
+                                required
                             />
                         </div>
-
-                        <div className="field">
-                            <label>Contact Email</label>
+                        <div className="form-field">
+                            <label>Company</label>
                             <input
-                                type="email"
-                                name="contactEmail"
-                                value={formData.contactEmail}
+                                type="text"
+                                name="company"
+                                value={formData.company}
                                 onChange={handleChange}
-                                placeholder="e.g., johndoe@gmail.com"
+                                placeholder="e.g., Amazon"
+                                required
                             />
                         </div>
                     </div>
 
-                    <div className="field-row">
-                        <div className="field">
-                            <label>Interview Date</label>
-                            <input
-                                type="date"
-                                name="interviewDate"
-                                value={formData.interviewDate || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="field checkbox-field">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    name="visaSponsorship"
-                                    checked={formData.visaSponsorship}
-                                    onChange={(e) => handleChange({
-                                        target: {
-                                            name: 'visaSponsorship',
-                                            value: e.target.checked
-                                        }
-                                    })}
-                                />
-                                Visa Sponsorship Available
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="field-row">
-                        <div className="field">
+                    <div className="form-row">
+                        <div className="form-field">
                             <label>Status</label>
                             <select
                                 name="status"
@@ -159,8 +77,7 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
                                 <option value="Rejected">Rejected</option>
                             </select>
                         </div>
-
-                        <div className="field">
+                        <div className="form-field">
                             <label>Job Type</label>
                             <select
                                 name="jobType"
@@ -174,23 +91,90 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
                         </div>
                     </div>
 
-                    <div className="field">
+                    <div className="form-field">
                         <label>Location</label>
                         <input
                             type="text"
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
-                            placeholder="e.g., San Marcos, TX"
-                            required
+                            placeholder="e.g., Austin, TX"
                         />
                     </div>
 
-                    <div className="application-form-actions">
-                        <button type="button" onClick={onCancel} className="cancel">
+                    <div className="form-field">
+                        <label>Job URL</label>
+                        <input
+                            type="url"
+                            name="postingUrl"
+                            value={formData.postingUrl}
+                            onChange={handleChange}
+                            placeholder="https://"
+                        />
+                    </div>
+
+                    <div className="form-field">
+                        <label>Notes</label>
+                        <textarea
+                            name="notes"
+                            value={formData.notes}
+                            onChange={handleChange}
+                            rows="3"
+                            placeholder="Add any notes you want to remember about this application..."
+                        />
+                    </div>
+
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label>Contact Name</label>
+                            <input
+                                type="text"
+                                name="contactName"
+                                value={formData.contactName}
+                                onChange={handleChange}
+                                placeholder="e.g., Jeff Bezos"
+                            />
+                        </div>
+                        <div className="form-field">
+                            <label>Contact Email</label>
+                            <input
+                                type="email"
+                                name="contactEmail"
+                                value={formData.contactEmail}
+                                onChange={handleChange}
+                                placeholder="e.g., joe@company.com"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label>Interview Date</label>
+                            <input
+                                type="date"
+                                name="interviewDate"
+                                value={formData.interviewDate}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="form-field checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="visaSponsorship"
+                                    checked={formData.visaSponsorship}
+                                    onChange={handleChange}
+                                />
+                                Visa Sponsorship Available
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="form-actions">
+                        <button type="button" className="form-button cancel" onClick={onCancel}>
                             Cancel
                         </button>
-                        <button type="submit" className="save">
+                        <button type="submit" className="form-button submit">
                             {isEditing ? 'Save Changes' : 'Add Application'}
                         </button>
                     </div>
