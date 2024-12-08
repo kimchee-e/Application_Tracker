@@ -43,12 +43,12 @@ function App() {
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/extension" element={<Extension />} />
             </Route>
 
             {/* Authenticated routes */}
             <Route element={<AuthenticatedLayout />}>
               <Route path="/tableView" element={<TableView />} />
-              <Route path="/extension" element={<Extension />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
