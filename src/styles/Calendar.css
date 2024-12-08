@@ -4,13 +4,17 @@
     margin: 0 auto;
 }
 
-h1 {
+header {
+    margin-bottom: 24px;
+}
+
+header h1 {
     font-size: 28px;
     color: #2c2c2c;
     margin-bottom: 8px;
 }
 
-p {
+header p {
     color: #666;
     font-size: 15px;
 }

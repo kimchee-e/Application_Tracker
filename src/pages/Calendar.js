@@ -55,12 +55,10 @@ const Calendar = () => {
 
     return (
         <div className="calendar-page">
-            <div className="page-header">
+            <header>
                 <h1>Interview Calendar</h1>
-                <p>
-                        Track your upcoming interviews
-                </p>
-            </div>
+                <p>Track your upcoming interviews</p>
+            </header>
             <div className="calendar-container">
                 <BigCalendar
                     localizer={localizer}

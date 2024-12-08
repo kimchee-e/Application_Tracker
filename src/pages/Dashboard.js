@@ -57,11 +57,9 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-page">
-            <header className="page-header">
+            <header>
                 <h1>Dashboard</h1>
-                <p>
-                    Here's how your internship search is going
-                </p>
+                <p>Here's how your internship search is going</p>
             </header>
             <section className="metrics-container">
                 <div className="card">
