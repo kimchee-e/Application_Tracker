@@ -19,7 +19,7 @@
     padding: 0 8px;
 }
 
-nav {
+.sidebar nav {
     display: flex;
     flex-direction: column;
     gap: 16px;
