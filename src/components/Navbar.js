@@ -17,31 +17,39 @@ const Navbar = () => {
 
     return (
         <nav className="nav">
-            <Link to="/" className="site-name">Jobly</Link>
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                {user && (
+            <div className="nav-container">
+                <Link to="/" className="site-name">Jobly</Link>
+                <ul>
                     <li>
-                        <Link to="/tableView">Applications</Link>
+                        <Link to="/">Home</Link>
                     </li>
-                )}
-                <li>
-                    <Link to="/extension">Extension</Link>
-                </li>
-                {!user ? (
+                    {/* {user && ( */}
+                        <li>
+                            <Link to="/tableView">Applications</Link>
+                        </li>
+                    {/* )} */}
                     <li>
-                        <Link to="/login">Login</Link>
+                        <Link to="/extension">Extension</Link>
                     </li>
-                ) : (
-                    <li>
-                        <button onClick={handleLogout} className="nav-button">
-                            Logout
+                    {!user ? (
+                        <button
+                            className="login-button" 
+                            onClick={() => navigate('/login')}
+                        >
+                            Login
                         </button>
-                    </li>
-                )}
-            </ul>
+                    ) : (
+                        <li>
+                            <button 
+                                className="logout-button"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    )}
+                </ul>
+            </div>
         </nav>
     );
 };

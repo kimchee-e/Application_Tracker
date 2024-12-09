@@ -30,9 +30,9 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/tableView" element={
-                            <ProtectedRoute>
+                            // <ProtectedRoute>
                                 <TableView />
-                            </ProtectedRoute>
+                            // </ProtectedRoute>
                         } />
                         <Route path="/extension" element={<Extension />} />
                     </Routes>

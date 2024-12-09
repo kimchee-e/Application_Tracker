@@ -6,13 +6,13 @@ body {
     margin: 0;
 }
 
-.nav {
+.nav-container {
     background-color: #38566e;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.2rem;
+    padding: 0.2rem 1rem;
     font-family: Arial, sans-serif;
 }
 
@@ -58,17 +58,21 @@ body {
     border-radius: 2px; /* Optional: rounded corners for the bar */
 }
 
-.nav-button {
-    /* font-size: 18px; */
-    background: #4e7290;
+.logout-button, .login-button {
+    font-size: 16px;
+    background: transparent;
     color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 8px 20px;
+    border: 1px solid;
+    border-radius: 2px;
     cursor: pointer;
+    transition: all 0.3s ease-out;
 }
 
-.nav-button:hover {
-    background: #49647b;
+.logout-button:hover, .login-button:hover {
+    background: #f8f9fa;
+    color: #38566e;
+    border-radius: 3px;
 }
 
 @media (max-width: 600px) {

@@ -53,7 +53,7 @@ const TableView = () => {
     return (
         <div className="table-view-container">
             <h1>Job Applications</h1>
-            <button onClick={() => addNewApplication()}>+ New Application</button>
+            <button className="add-button" onClick={() => addNewApplication()}>+ New Application</button>
             <table className="job-table">
                 <thead>
                     <tr>
