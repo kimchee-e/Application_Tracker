@@ -4,17 +4,17 @@
     margin: 0 auto;
 }
 
-header {
+.dashboard-page header {
     margin-bottom: 24px;
 }
 
-header h1 {
+.dashboard-page header h1 {
     font-size: 28px;
     color: #2c2c2c;
     margin-bottom: 8px;
 }
 
-header p {
+.dashboard-page header p {
     color: #666;
     font-size: 15px;
 }

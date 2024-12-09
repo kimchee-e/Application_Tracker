@@ -142,7 +142,7 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
                                 name="contactEmail"
                                 value={formData.contactEmail}
                                 onChange={handleChange}
-                                placeholder="e.g., joe@company.com"
+                                placeholder="e.g., jeff@amazon.com"
                             />
                         </div>
                     </div>

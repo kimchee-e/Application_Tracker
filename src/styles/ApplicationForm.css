@@ -37,16 +37,16 @@
     margin-bottom: 20px;
 }
 
-.form-field label {
+.form-container .form-field label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
     color: #2c2c2c;
 }
 
-.form-field input,
-.form-field select,
-.form-field textarea {
+.form-container .form-field input,
+.form-container .form-field select,
+.form-container .form-field textarea {
     width: 100%;
     padding: 10px 12px;
     font-size: 14px;

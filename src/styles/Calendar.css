@@ -4,17 +4,17 @@
     margin: 0 auto;
 }
 
-header {
+.calendar-page header {
     margin-bottom: 24px;
 }
 
-header h1 {
+.calendar-page header h1 {
     font-size: 28px;
     color: #2c2c2c;
     margin-bottom: 8px;
 }
 
-header p {
+.calendar-page header p {
     color: #666;
     font-size: 15px;
 }

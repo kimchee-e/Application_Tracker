@@ -7,19 +7,19 @@
     margin: 0 auto;
 }
 
-header {
+.table-page header {
     margin-bottom: 24px;
 }
 
-header h1 {
+.table-page header h1 {
     font-size: 28px;
     color: #2c2c2c;
     margin-bottom: 8px;
 }
 
-header p {
+.table-page header p {
     color: #666;
-    font-size:  15px;
+    font-size: 15px;
 }
 
 /* Stats Section */
@@ -169,11 +169,11 @@ header p {
     background: white;
 }
 
-.job-table thead {
+.table-page .job-table thead {
     background-color: #f5f5f5;
 }
 
-.job-table th {
+.table-page .job-table th {
     padding: 12px 16px;
     font-size: 13px;
     color: #666;
@@ -181,18 +181,18 @@ header p {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.job-table td {
+.table-page .job-table td {
     padding: 16px;
     font-size: 14px;
     color: #000;
     border-bottom: 1px solid #e0e0e0;
 }
 
-.job-table tbody tr:last-child td {
+.table-page .job-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-.job-table tbody tr:hover {
+.table-page .job-table tbody tr:hover {
     background-color: #fafafa;
 }
 
