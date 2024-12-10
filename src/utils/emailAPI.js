@@ -100,7 +100,7 @@ export const linkedInParser = (emails) => {
 
         const result = {
             jobTitle: jobTitle,
-            companyName: companyName[1].trim(),
+            company: companyName[1].trim(),
             location: location,
             dateApplied: dateApplied,
             jobType: 'Full Time',
