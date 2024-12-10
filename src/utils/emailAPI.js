@@ -1,6 +1,8 @@
+import { checkEmailProcessed, markEmailProcessed } from './firestore';
+
 const GMAIL_API_URL = 'https://gmail.googleapis.com/gmail/v1/users/me';
 
-export const getLinkedInEmails = async (accessToken) => {
+export const getLinkedInEmails = async (accessToken, userId) => {
 
     try {
         const URL = `${GMAIL_API_URL}/messages?q=from:jobs-noreply@linkedin.com subject:"your application was sent to"`;
@@ -16,6 +18,12 @@ export const getLinkedInEmails = async (accessToken) => {
         const emails = [];
 
         for (const message of emailSearchResponse.messages) {
+            const isProcessed = await checkEmailProcessed(userId, message.id);
+            if (isProcessed) {
+                console.log('Skipping already processed email:', message.id);
+                continue; 
+            }
+
             const emailResponse = await fetch(`${GMAIL_API_URL}/messages/${message.id}?format=full`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -23,7 +31,11 @@ export const getLinkedInEmails = async (accessToken) => {
             });
 
             const emailData = await emailResponse.json();
-            emails.push(emailData);
+            const parsedEmail = linkedInParser(emailData);
+            if (parsedEmail) {
+                await markEmailProcessed(userId, message.id);
+                emails.push(parsedEmail);
+            }
         }
 
         return emails;
