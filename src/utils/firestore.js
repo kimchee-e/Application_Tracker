@@ -14,7 +14,7 @@ import {
 import { db } from '../firebase';
 
 const APPLICATIONS_COLLECTION = 'applications';
-
+const EMAILS_COLLECTION = 'emails';
 export const getApplications = async (userId) => {
     const q = query(
         collection(db, APPLICATIONS_COLLECTION),
@@ -66,4 +66,22 @@ export const updateApplication = async (applicationId, updates) => {
 export const deleteApplication = async (applicationId) => {
     const docRef = doc(db, APPLICATIONS_COLLECTION, applicationId);
     await deleteDoc(docRef);
+};
+
+export const checkEmailProcessed = async (userId, emailId) => {
+    const q = query(
+        collection(db, EMAILS_COLLECTION),
+        where("userId", "==", userId),
+        where("emailId", "==", emailId)
+    );
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+};
+
+export const markEmailProcessed = async (userId, emailId) => {
+    await addDoc(collection(db, EMAILS_COLLECTION), {
+        userId,
+        emailId,
+        processedAt: serverTimestamp()
+    });
 };
