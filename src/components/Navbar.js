@@ -28,7 +28,7 @@ const Navbar = () => {
                     </li>
                 )}
                 <li>
-                    <Link to="/extension">Extension</Link>
+                    <Link to="/extension">Automated Tracking</Link>
                 </li>
                 {!user ? (
                     <li>

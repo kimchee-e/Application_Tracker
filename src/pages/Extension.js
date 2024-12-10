@@ -9,24 +9,18 @@ const Extension = () => {
     return (
         <div className="extension-container">
             <section className="main-section">
-                <h1>Save Time with Our Chrome Extension</h1>
+                <h1>Save Time with Our Automated Tracking</h1>
                 <p>
-                    Automatically capture job application details while you browse, and sync them directly with your account.
+                    Automatically capture job application details by connecting your Gmail account. 
                 </p>
-                <button 
-                    className="install-button" 
-                    onClick={handleInstallClick}
-                >
-                    Install Chrome Extension
-                </button>
             </section>
 
             <section className="features">
-                <h2>Why Use the Extension?</h2>
+                <h2>Why Use Automated Tracking?</h2>
                 <div className="feature-grid">
                     <div className="feature-card">
                         <h3>Seamless Integration</h3>
-                        <p>Save application data from job boards like LinkedIn and Indeed with a single click.</p>
+                        <p>Save application data while you apply.</p>
                     </div>
                     <div className="feature-card">
                         <h3>Track with Ease</h3>
