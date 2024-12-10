@@ -3,7 +3,6 @@ import { checkEmailProcessed, markEmailProcessed } from './firestore';
 const GMAIL_API_URL = 'https://gmail.googleapis.com/gmail/v1/users/me';
 
 export const getLinkedInEmails = async (accessToken, userId) => {
-
     try {
         const URL = `${GMAIL_API_URL}/messages?q=from:jobs-noreply@linkedin.com subject:"your application was sent to"`;
 
@@ -14,31 +13,37 @@ export const getLinkedInEmails = async (accessToken, userId) => {
         });
 
         const emailSearchResponse = await response.json();
-
-        const emails = [];
-
-        for (const message of emailSearchResponse.messages) {
-            const isProcessed = await checkEmailProcessed(userId, message.id);
-            if (isProcessed) {
-                console.log('Skipping already processed email:', message.id);
-                continue; 
-            }
-
-            const emailResponse = await fetch(`${GMAIL_API_URL}/messages/${message.id}?format=full`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-
-            const emailData = await emailResponse.json();
-            const parsedEmail = linkedInParser(emailData);
-            if (parsedEmail) {
-                await markEmailProcessed(userId, message.id);
-                emails.push(parsedEmail);
-            }
+        
+        if (!emailSearchResponse.messages || emailSearchResponse.messages.length === 0) {
+            console.log('No new LinkedIn emails found');
+            return [];
         }
 
-        return emails;
+        const emails = await Promise.all(
+            emailSearchResponse.messages.map(async (message) => {
+                const isProcessed = await checkEmailProcessed(userId, message.id);
+                if (isProcessed) {
+                    console.log('Skipping already processed email:', message.id);
+                    return null;
+                }
+
+                const emailResponse = await fetch(`${GMAIL_API_URL}/messages/${message.id}?format=full`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+
+                const emailData = await emailResponse.json();
+                const parsedEmail = linkedInParser(emailData);
+                
+                if (parsedEmail) {
+                    await markEmailProcessed(userId, message.id);
+                    return parsedEmail
+                }
+            })
+        );
+
+        return emails.filter(email => email !== null);
     } catch (error) {
         console.error('Error getting emails:', error);
         throw error;
@@ -61,13 +66,13 @@ export const linkedInParser = (emails) => {
             body = emails.payload.body.data // if just plain text than can just directly access. 
         }
 
-        const stringBody = atob(body); // got to convert from base 64 to string
+        const stringBody = atob(body.replace(/-/g, '+').replace(/_/g, '/')); // got to convert from base 64 to string
         console.log('Body of the email is: ', stringBody);
 
-        const companyName = subject.match(/sent to (.*)(?:,|\.|$)/i); 
+        const companyName = subject.match(/sent to (.*?)(?:,|\.|$)/i);
+        if (!companyName) return null;
 
         const lines = stringBody.split('\n');
-
         let location = '';
         let jobTitle = '';
 
@@ -76,7 +81,7 @@ export const linkedInParser = (emails) => {
             const line = lines[i].trim();
 
             if (line.includes('application was sent')) continue; 
-
+            
             if(!jobTitle) { // my understanding is job title is first line after header
                 jobTitle = line;
                 continue;
