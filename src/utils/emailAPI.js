@@ -70,7 +70,6 @@ export const linkedInParser = (emails) => {
 
         let location = '';
         let jobTitle = '';
-        let date = '';
 
         // there is probably a better way to do this but for this is all I got.
         for (let i = 0; i < lines.length; i++) {
