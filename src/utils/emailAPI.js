@@ -34,7 +34,7 @@ export const getLinkedInEmails = async (accessToken) => {
 };
 
 
-const linkedInParser = (emails) => {
+export const linkedInParser = (emails) => {
     try { 
         console.log('Starting the linked in funcion here:')
         const headers = emails.payload.headers;
@@ -52,13 +52,49 @@ const linkedInParser = (emails) => {
         const stringBody = atob(body); // got to convert from base 64 to string
         console.log('Body of the email is: ', stringBody);
 
-        return {
-            subject: subject,
-            body: stringBody
+        const companyName = subject.match(/sent to (.*)(?:,|\.|$)/i); 
+
+        const lines = stringBody.split('\n');
+
+        let location = '';
+        let jobTitle = '';
+        let date = '';
+
+        // there is probably a better way to do this but for this is all I got.
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+
+            if (line.includes('application was sent')) continue; 
+
+            if(!jobTitle) { // my understanding is job title is first line after header
+                jobTitle = line;
+                continue;
+            }
+
+            const locationParsed = line.match(/([^,]+),\s*([A-Z]{2})/); // location is Austin, TX or something like that
+            if (locationParsed) {
+                location = locationParsed[1] + ', ' + locationParsed[2];
+                break;
+            }
         }
+        console.log('Location is:', location);
+
+        const dateHeader = headers.find(header => header.name === 'Date');
+        const dateApplied = dateHeader ? new Date(dateHeader.value) : new Date()
+
+        const result = {
+            jobTitle: jobTitle,
+            companyName: companyName[1].trim(),
+            location: location,
+            dateApplied: dateApplied,
+            jobType: 'Full Time',
+            status: 'Applied'
+        };
+
+        console.log('Linked in parser found: ', result);
+        return result;
     } catch (error) {
         console.error('Error parsing emails:', error);
         throw error;
     }
-
 }; 
