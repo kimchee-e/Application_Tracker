@@ -12,6 +12,12 @@ const StatusBadge = ({ status }) => (
     </span>
 );
 
+const SponsorshipBadge = ({ sponsors }) => (
+    <span className={`sponsorship-badge sponsorship-${sponsors ? 'yes' : 'unknown'}`}>
+        {sponsors ? 'Sponsors' : 'No Info'}
+    </span>
+);
+
 const TableView = () => {
     const { user } = useAuth();
     const filterRef = useRef(null);
@@ -272,7 +278,7 @@ const TableView = () => {
                             <th>Job Type</th>
                             <th>Date Applied</th>
                             <th>Location</th>
-                            <th>Sponsors</th>
+                            <th>Visa Sponsorship</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -286,7 +292,7 @@ const TableView = () => {
                                     <td>{job.jobType}</td>
                                     <td>{job.dateApplied ? new Date(job.dateApplied).toLocaleDateString() : 'No date'}</td>
                                     <td>{job.location}</td>
-                                    <td>{job.visaSponsorship ? 'yes' : 'no'}</td>
+                                    <td><SponsorshipBadge sponsors={job.visaSponsorship} /></td>
                                     <td className="row-actions">
                                         <button 
                                             className="edit-button"
