@@ -4,6 +4,7 @@ import { getApplications, addApplication, deleteApplication, updateApplication }
 import "./../styles/TableView.css";
 import { MagnifyingGlass, FunnelSimple } from '@phosphor-icons/react';
 import ApplicationForm from '../components/ApplicationForm';
+import EmailParsing from '../components/EmailParsing';
 
 const StatusBadge = ({ status }) => (
     <span className={`status-badge status-${status.toLowerCase()}`}>
@@ -250,9 +251,15 @@ const TableView = () => {
                         </div>
                     </div>
                     {!editingId && (
-                        <button className="add-button" onClick={() => setShowAddForm(true)}>
-                            + New Application
-                        </button>
+                        <>
+                            <EmailParsing 
+                                reload={loadApplications}
+                                showNotification={showNotification}
+                            />
+                            <button className="add-button" onClick={() => setShowAddForm(true)}>
+                                + New Application
+                            </button>
+                        </>
                     )}
                 </div>
 
