@@ -4,7 +4,6 @@ import {
     ChartLineUp, 
     ListChecks, 
     Calendar, 
-    GoogleChromeLogo,
     Gear, 
     SignOut 
 } from '@phosphor-icons/react';
@@ -34,9 +33,6 @@ const Sidebar = () => {
                 </Link>
                 <Link to="/calendar" className={location.pathname === '/calendar' ? 'active' : ''}>
                     <Calendar size={20} /> Calendar
-                </Link>
-                <Link to="/extension" className={location.pathname === '/extension' ? 'active' : ''}>
-                    <GoogleChromeLogo size={20} /> Extension
                 </Link>
             </nav>
             <div className="bottom-nav">
