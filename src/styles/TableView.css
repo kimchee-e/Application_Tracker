@@ -363,3 +363,28 @@
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+.buttonz {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.connected, .not-connected {
+    padding: 0 20px;
+    height: 38px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    color: #ffffff;
+    align-items: center;
+}
+
+.connected {
+    background-color: #4CBB17;
+}
+
+.not-connected {
+    background-color: #404040;
+}

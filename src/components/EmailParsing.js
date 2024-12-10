@@ -46,10 +46,10 @@ const EmailParsing = ({ reload, showNotification }) => {
 
     return (
         <button 
-            className="add-button"
+            className={token ? 'connected' : 'not-connected'}
             onClick={() => login()}
         >
-            {token ? 'Connectd' : 'Connect Gmail'}
+            {token ? 'Connected' : 'Connect Gmail'}
         </button>
     );
 };

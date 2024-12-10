@@ -251,7 +251,7 @@ const TableView = () => {
                         </div>
                     </div>
                     {!editingId && (
-                        <>
+                        <div className="buttonz">
                             <EmailParsing 
                                 reload={loadApplications}
                                 showNotification={showNotification}
@@ -259,7 +259,7 @@ const TableView = () => {
                             <button className="add-button" onClick={() => setShowAddForm(true)}>
                                 + New Application
                             </button>
-                        </>
+                        </div>
                     )}
                 </div>
 
