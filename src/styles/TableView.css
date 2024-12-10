@@ -283,6 +283,14 @@
     color: #c62828;
 }
 
+.sponsor-yes {
+    color: #2e7d32;
+}
+
+.sponsor-no {
+    color: #c62828;
+}
+
 /* Pagination Styles */
 .table-footer {
     display: flex;

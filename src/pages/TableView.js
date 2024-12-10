@@ -272,6 +272,7 @@ const TableView = () => {
                             <th>Job Type</th>
                             <th>Date Applied</th>
                             <th>Location</th>
+                            <th>Sponsors</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -285,6 +286,7 @@ const TableView = () => {
                                     <td>{job.jobType}</td>
                                     <td>{job.dateApplied ? new Date(job.dateApplied).toLocaleDateString() : 'No date'}</td>
                                     <td>{job.location}</td>
+                                    <td>{job.visaSponsorship ? 'yes' : 'no'}</td>
                                     <td className="row-actions">
                                         <button 
                                             className="edit-button"

@@ -12,6 +12,7 @@ import {
     serverTimestamp 
 } from 'firebase/firestore';
 import { db } from '../firebase';
+import { checkSponsorship } from './sponsorshipCheck';
 
 const APPLICATIONS_COLLECTION = 'applications';
 const EMAILS_COLLECTION = 'emails';
@@ -46,7 +47,7 @@ export const addApplication = async (userId, applicationData) => {
         notes: applicationData.notes || '',
         contactName: applicationData.contactName || '',
         contactEmail: applicationData.contactEmail || '',
-        visaSponsorship: applicationData.visaSponsorship || false,
+        visaSponsorship: checkSponsorship(applicationData.company),
         dateApplied: serverTimestamp(),
         interviewDate: applicationData.interviewDate ? new Date(applicationData.interviewDate) : null,
         createdAt: serverTimestamp(),

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/ApplicationForm.css';
+import { checkSponsorship } from '../utils/sponsorshipCheck';
 
 const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = false }) => {
     const [formData, setFormData] = useState({
@@ -19,10 +20,23 @@ const ApplicationForm = ({ onSubmit, onCancel, initialData = null, isEditing = f
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
+        
+        if (name === 'company') {
+            const isSponsoring = checkSponsorship(value);
+            console.log('Company', value);
+            console.log('Sponsoring visas?', isSponsoring);
+            
+            setFormData(prev => ({
+                ...prev,
+                company: value,
+                visaSponsorship: isSponsoring
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: type === 'checkbox' ? checked : value
+            }));
+        }
     };
 
     const handleSubmit = (event) => {
