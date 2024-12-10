@@ -3,7 +3,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { getLinkedInEmails } from '../utils/emailAPI';
 import { addApplication } from '../utils/firestore';
 import { useAuth } from '../context/AuthContext';
-import '../styles/EmailParsing.css';
 
 const EmailParsing = ({ reload, showNotification }) => {
     const { user } = useAuth();
