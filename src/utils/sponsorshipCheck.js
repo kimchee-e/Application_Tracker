@@ -6,7 +6,7 @@ Object.keys(visaSponsors).forEach(company => {
         .toLowerCase()
         .trim()
         .replace(/^[\s\t"]+|[\s\t"]+$/g, '')
-        .replace(/,?\s*(inc|llc|corp)\.?$/gi, '');
+        .replace(/,?\s*(inc|llc|corp|corporation)\.?$/gi, '');
     
     cleanedSponsors[cleanedName] = visaSponsors[company];
 });
@@ -18,7 +18,7 @@ export const checkSponsorship = (companyName) => {
         .toLowerCase()
         .trim()
         .replace(/^[\s\t"]+|[\s\t"]+$/g, '')
-        .replace(/,?\s*(inc|llc|corp)\.?$/gi, '');
+        .replace(/,?\s*(inc|llc|corp|corporation)\.?$/gi, '');
 
     return cleanedSponsors[searchName] > 0;
 }; 
