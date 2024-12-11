@@ -1,0 +1,99 @@
+/* Extension.css */
+
+.extension-container {
+    min-height: calc(100vh - 60px);
+    padding: 0 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+}
+
+.main-section {
+    padding: 120px 0 60px;
+    text-align: center;
+}
+
+.main-section h1 {
+    font-size: 64px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: #2c2c2c;
+}
+
+.main-section p {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.install-button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background: #404040;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.install-button:hover {
+    background: #2c2c2c;
+    transform: translateY(-2px);
+}
+
+.features {
+    padding: 80px 0;
+}
+
+.features h2 {
+    color: #2c2c2c;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: #f8f9fa;
+    padding: 40px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    color: #2c2c2c;
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 0 20px;
+    }
+
+    .main-section h1 {
+        font-size: 40px;
+    }
+
+    .main-section p {
+        font-size: 20px;
+    }
+}

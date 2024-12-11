@@ -1,0 +1,39 @@
+.calendar-page {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.calendar-page header {
+    margin-bottom: 24px;
+}
+
+.calendar-page header h1 {
+    font-size: 28px;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+}
+
+.calendar-page header p {
+    color: #666;
+    font-size: 15px;
+}
+
+.calendar-container {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+/* This is stuff from the react-big-calendar library */
+.rbc-header {
+    padding: 8px;
+    font-weight: 500;
+    color: #404040;
+}
+
+.rbc-event {
+    background-color: #404040;
+    border-radius: 4px;
+}

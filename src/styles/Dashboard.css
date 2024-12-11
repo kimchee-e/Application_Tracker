@@ -1,0 +1,66 @@
+.dashboard-page {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-page header {
+    margin-bottom: 24px;
+}
+
+.dashboard-page header h1 {
+    font-size: 28px;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+}
+
+.dashboard-page header p {
+    color: #666;
+    font-size: 15px;
+}
+
+.metrics-container {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.card {
+    padding: 24px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.card h3 {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.number {
+    font-size: 32px;
+    color: #2c2c2c;
+}
+
+.sankey-container {
+    margin-top: 32px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.sankey-container h2 {
+    color: #2c2c2c;
+    font-size: 20px;
+    margin-bottom: 24px;
+}
+
+.sankey-chart {
+    height: 400px;
+    width: 100%;
+} 
